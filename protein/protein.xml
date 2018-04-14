@@ -1,4 +1,5 @@
 <tool id="protein" name="A simple simulation of a protein." version="0.1.0">
+    <!-- Note: this wrapper is (for now) based on Justin Lemkul's GROMACS tutorial which can be found here: http://www.bevanlab.biochem.vt.edu/Pages/Personal/justin/gmx-tutorials/lysozyme/ -->
     <requirements>
         <requirement type="package">gromacs</requirement>
     </requirements>
@@ -32,8 +33,7 @@
         /usr/local/gromacs/bin/gmx grompp -f ./md.mdp -c npt.gro -t npt.cpt -p topol.top -o md_0_1.tpr &&
         /usr/local/gromacs/bin/gmx mdrun -deffnm md_0_1 &&
 
-        cp md_0_1.trr $output1 &&
-        cp md_0_1.trr ~/test_md.trr
+        cp md_0_1.trr $output1
     ]]></command>
 
         <configfiles>
@@ -235,7 +235,7 @@ gen_vel		= no		; Velocity generation is off
         </param>
 
         <!-- Variables for .mdp files -->
-        <param name="md_steps" type="integer" label="Number of steps for the md simulation" value="0" min="0" max="1000000" help="MD steps" />
+        <param name="md_steps" type="integer" label="Number of steps for the MD simulation" value="0" min="0" max="1000000" help="MD steps" />
         <param name="step_length" type="float" label="Step length in ps" value="0" min="0.0001" max="1.0" help="Step length in ps." />
         
     </inputs>
@@ -264,13 +264,17 @@ gen_vel		= no		; Velocity generation is off
 
     <citations>
         <citation type="bibtex">
-@misc{githubseqtk,
-  author = {Last, First},
-  year = {1991-2018},
-  title = {gromacs},
-  publisher = {GitHub},
-  journal = {GitHub repository},
-  url = {https://github.com/gromacs},
+@article{ABRAHAM201519,
+title = "GROMACS: High performance molecular simulations through multi-level parallelism from laptops to supercomputers",
+journal = "SoftwareX",
+volume = "1-2",
+pages = "19 - 25",
+year = "2015",
+issn = "2352-7110",
+doi = "https://doi.org/10.1016/j.softx.2015.06.001",
+url = "http://www.sciencedirect.com/science/article/pii/S2352711015000059",
+author = "Mark James Abraham and Teemu Murtola and Roland Schulz and Szilárd Páll and Jeremy C. Smith and Berk Hess and Erik Lindahl",
+keywords = "Molecular dynamics, GPU, SIMD, Free energy"
 }</citation>
     </citations>
 </tool>
