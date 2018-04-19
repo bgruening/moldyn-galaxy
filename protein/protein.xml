@@ -31,9 +31,8 @@
         /usr/local/gromacs/bin/gmx mdrun -deffnm npt &&
 
         /usr/local/gromacs/bin/gmx grompp -f ./md.mdp -c npt.gro -t npt.cpt -p topol.top -o md_0_1.tpr &&
-        /usr/local/gromacs/bin/gmx mdrun -deffnm md_0_1 &&
+        /usr/local/gromacs/bin/gmx mdrun -deffnm md_0_1
 
-        cp md_0_1.trr $output1
     ]]></command>
 
         <configfiles>
@@ -216,31 +215,31 @@ gen_vel		= no		; Velocity generation is off
         </configfiles>
 
     <inputs>
-        <param name="pdb_input" type="data" format="pdb" label="PDB input file."/>
-        <param name="h2o" type="select" label="Water model">
+        <param argument="pdb_input" type="data" format='pdb' label="PDB input file."/>
+        <param argument="h2o" type="select" label="Water model">
             <option value="spce" selected="true">SPCE</option>
             <!-- More here -->
         </param>
-        <param name="ff" type="select" label="Force field">
+        <param argument="ff" type="select" label="Force field">
             <option value="oplsaa" selected="true">OPLS/AA</option>
             <option value="CHARMM">CHARMM</option>
             <!-- More here -->
         </param>
-        <param name="ignore_h" type="boolean" label="Ignore hydrogens" truevalue="" falsevalue="no" help="ignore hydrogens" />
-        <param name="box_d" type="float" label="Box dimensions" value="0.0" min="0.0" max="10.0" help="Box dimensions" />
-        <param name="box_type" type="select" label="Box type">
+        <param argument="ignore_h" type="boolean" label="Ignore hydrogens" truevalue="" falsevalue="no" help="ignore hydrogens" />
+        <param argument="box_d" type="float" label="Box dimensions" value="0.0" min="0.0" max="10.0" help="Box dimensions" />
+        <param argument="box_type" type="select" label="Box type">
             <option value="cubic">Cubic</option>
             <option value="icosahedral" selected="true">Icosahedral</option>
             <!-- More here -->
         </param>
 
         <!-- Variables for .mdp files -->
-        <param name="md_steps" type="integer" label="Number of steps for the MD simulation" value="0" min="0" max="1000000" help="MD steps" />
-        <param name="step_length" type="float" label="Step length in ps" value="0" min="0.0001" max="1.0" help="Step length in ps." />
+        <param argument="md_steps" type="integer" label="Number of steps for the MD simulation" value="0" min="0" max="1000000" help="MD steps" />
+        <param argument="step_length" type="float" label="Step length in ps" value="0" min="0.0001" max="1.0" help="Step length in ps." />
         
     </inputs>
     <outputs>
-        <data name="output1" format="trr"/>
+        <data from_work_dir="md_0_1.trr" name="output1" format="trr"/>
     </outputs>
     <tests>
         <test>
@@ -252,10 +251,7 @@ gen_vel		= no		; Velocity generation is off
             <param name="box_type" value="cubic" />
             <param name="step_length" value="0.002"/>
             <param name="md_steps" value="500"/>
-
-            <output name="output1" file="md_0_1.trr">
-
-            </output>
+            <output name="output1" file="test_md.trr" ftype="trr" compare="sim_size"/>
         </test>
     </tests>
     <help><![CDATA[
@@ -263,18 +259,6 @@ gen_vel		= no		; Velocity generation is off
     ]]></help>
 
     <citations>
-        <citation type="bibtex">
-@article{ABRAHAM201519,
-title = "GROMACS: High performance molecular simulations through multi-level parallelism from laptops to supercomputers",
-journal = "SoftwareX",
-volume = "1-2",
-pages = "19 - 25",
-year = "2015",
-issn = "2352-7110",
-doi = "https://doi.org/10.1016/j.softx.2015.06.001",
-url = "http://www.sciencedirect.com/science/article/pii/S2352711015000059",
-author = "Mark James Abraham and Teemu Murtola and Roland Schulz and Szilárd Páll and Jeremy C. Smith and Berk Hess and Erik Lindahl",
-keywords = "Molecular dynamics, GPU, SIMD, Free energy"
-}</citation>
+        <citation type="doi">10.1016/j.softx.2015.06.001</citation>
     </citations>
 </tool>
