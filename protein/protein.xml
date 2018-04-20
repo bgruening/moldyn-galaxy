@@ -40,14 +40,14 @@
             <configfile name="ions">
 ; ions.mdp - used as input into grompp to generate ions.tpr
 ; Parameters describing what to do, when to stop and what to save
-integrator	= steep		; Algorithm (steep = steepest descent minimization)
+integrator	= steep		; Algorithm (steep = steepest descent minimization, used for energy minimization)
 emtol		= 1000.0  	; Stop minimization when the maximum force is less than 1000.0 kJ/mol/nm
 emstep      = 0.01      ; Energy step size
 nsteps		= 50	  	; Maximum number of (minimization) steps to perform
 
 ; Parameters describing how to find the neighbors of each atom and how to calculate the interactions
 nstlist		    = 1		    ; Frequency to update the neighbor list and long range forces
-cutoff-scheme   = Verlet
+cutoff-scheme   = Verlet    ; group is the other option
 ns_type		    = grid		; Method to determine neighbor list (simple, grid)
 coulombtype	    = PME		; Treatment of long range electrostatic interactions
 rcoulomb	    = 1.0		; Short-range electrostatic cut-off
@@ -60,7 +60,7 @@ integrator	= steep		; Algorithm (steep = steepest descent minimization)
 emtol		= 1000.0  	; Stop minimization when the maximum force is less than 1000.0 kJ/mol/nm
 emstep      = 0.01      ; Energy step size
 nsteps		= 50	  	; Maximum number of (minimization) steps to perform
-
+0
 ; Parameters describing how to find the neighbors of each atom and how to calculate the interactions
 nstlist		    = 1		    ; Frequency to update the neighbor list and long range forces
 cutoff-scheme   = Verlet
@@ -75,13 +75,13 @@ title		= OPLS Lysozyme NVT equilibration
 define		= -DPOSRES	; position restrain the protein
 ; Run parameters
 integrator	= md		; leap-frog integrator
-nsteps		= 50		; 2 * 50000 = 100 ps
-dt		    = 0.002		; 2 fs
+nsteps		= $nvt_steps		; 2 * 50000 = 100 ps
+dt		    = $step_length		; 2 fs
 ; Output control
-nstxout		= 500		; save coordinates every 1.0 ps
-nstvout		= 500		; save velocities every 1.0 ps
-nstenergy	= 500		; save energies every 1.0 ps
-nstlog		= 500		; update log file every 1.0 ps
+nstxout		= $write_freq		; save coordinates every 1.0 ps
+nstvout		= $write_freq		; save velocities every 1.0 ps
+nstenergy	= $write_freq		; save energies every 1.0 ps
+nstlog		= $write_freq		; update log file every 1.0 ps
 ; Bond parameters
 continuation	        = no		; first dynamics run
 constraint_algorithm    = lincs	    ; holonomic constraints 
@@ -102,7 +102,7 @@ fourierspacing	= 0.16	; grid spacing for FFT
 tcoupl		= V-rescale	            ; modified Berendsen thermostat
 tc-grps		= Protein Non-Protein	; two coupling groups - more accurate
 tau_t		= 0.1	  0.1           ; time constant, in ps
-ref_t		= 300 	  300           ; reference temperature, one for each group, in K
+ref_t		= $temp 	  $temp           ; reference temperature, one for each group, in K
 ; Pressure coupling is off
 pcoupl		= no 		; no pressure coupling in NVT
 ; Periodic boundary conditions
@@ -120,13 +120,13 @@ title		= OPLS Lysozyme NPT equilibration
 define		= -DPOSRES	; position restrain the protein
 ; Run parameters
 integrator	= md		; leap-frog integrator
-nsteps		= 50		; 2 * 50000 = 100 ps
-dt		    = 0.002		; 2 fs
+nsteps		= $npt_steps		; 2 * 50000 = 100 ps
+dt		    = $step_length		; 2 fs
 ; Output control
-nstxout		= 500		; save coordinates every 1.0 ps
-nstvout		= 500		; save velocities every 1.0 ps
-nstenergy	= 500		; save energies every 1.0 ps
-nstlog		= 500		; update log file every 1.0 ps
+nstxout		= $write_freq		; save coordinates every 1.0 ps
+nstvout		= $write_freq		; save velocities every 1.0 ps
+nstenergy	= $write_freq		; save energies every 1.0 ps
+nstlog		= $write_freq		; update log file every 1.0 ps
 ; Bond parameters
 continuation	        = yes		; Restarting after NVT 
 constraint_algorithm    = lincs	    ; holonomic constraints 
@@ -147,7 +147,7 @@ fourierspacing	= 0.16		; grid spacing for FFT
 tcoupl		= V-rescale	            ; modified Berendsen thermostat
 tc-grps		= Protein Non-Protein	; two coupling groups - more accurate
 tau_t		= 0.1	  0.1	        ; time constant, in ps
-ref_t		= 300 	  300	        ; reference temperature, one for each group, in K
+ref_t		= $temp 	  $temp           ; reference temperature, one for each group, in K
 ; Pressure coupling is on
 pcoupl		        = Parrinello-Rahman	    ; Pressure coupling on in NPT
 pcoupltype	        = isotropic	            ; uniform scaling of box vectors
@@ -170,11 +170,11 @@ integrator	= md		; leap-frog integrator
 nsteps		= $md_steps	; 2 * 500000 = 1000 ps (1 ns)
 dt		    = $step_length		; 2 fs
 ; Output control
-nstxout		        = 5000		; save coordinates every 10.0 ps
-nstvout		        = 5000		; save velocities every 10.0 ps
-nstenergy	        = 5000		; save energies every 10.0 ps
-nstlog		        = 5000		; update log file every 10.0 ps
-nstxout-compressed  = 5000      ; save compressed coordinates every 10.0 ps
+nstxout		        = $write_freq		; save coordinates every 10.0 ps
+nstvout		        = $write_freq		; save velocities every 10.0 ps
+nstenergy	        = $write_freq		; save energies every 10.0 ps
+nstlog		        = $write_freq		; update log file every 10.0 ps
+nstxout-compressed  = $write_freq      ; save compressed coordinates every 10.0 ps
                                 ; nstxout-compressed replaces nstxtcout
 compressed-x-grps   = System    ; replaces xtc-grps
 ; Bond parameters
@@ -197,7 +197,7 @@ fourierspacing	= 0.16		; grid spacing for FFT
 tcoupl		= V-rescale	            ; modified Berendsen thermostat
 tc-grps		= Protein Non-Protein	; two coupling groups - more accurate
 tau_t		= 0.1	  0.1	        ; time constant, in ps
-ref_t		= 300 	  300	        ; reference temperature, one for each group, in K
+ref_t		= $temp 	  $temp           ; reference temperature, one for each group, in K
 ; Pressure coupling is on
 pcoupl		        = Parrinello-Rahman	    ; Pressure coupling on in NPT
 pcoupltype	        = isotropic	            ; uniform scaling of box vectors
@@ -209,7 +209,7 @@ pbc		= xyz		; 3-D PBC
 ; Dispersion correction
 DispCorr	= EnerPres	; account for cut-off vdW scheme
 ; Velocity generation
-gen_vel		= no		; Velocity generation is off 
+gen_vel		= no		; Velocity generation is off
 
             </configfile>
         </configfiles>
@@ -235,7 +235,11 @@ gen_vel		= no		; Velocity generation is off
 
         <!-- Variables for .mdp files -->
         <param argument="md_steps" type="integer" label="Number of steps for the MD simulation" value="0" min="0" max="1000000" help="MD steps" />
+        <param argument="nvt_steps" type="integer" label="Number of steps for the NVT equilibration" value="0" min="0" max="1000000" help="NVT steps" />
+        <param argument="npt_steps" type="integer" label="Number of steps for the NPT equilibration" value="0" min="0" max="1000000" help="NPT steps" />
+        <param argument="temp" type="integer" label="Temperature /K" value="0" min="0" max="1000000" help="Temperature" />
         <param argument="step_length" type="float" label="Step length in ps" value="0" min="0.0001" max="1.0" help="Step length in ps." />
+        <param argument="write_freq" type="integer" label="Number of steps that elapse between saving data points (velocities, forces, energies)" value="0" min="0" max="1000000" help="Step length in ps." />
         
     </inputs>
     <outputs>
@@ -251,6 +255,10 @@ gen_vel		= no		; Velocity generation is off
             <param name="box_type" value="cubic" />
             <param name="step_length" value="0.002"/>
             <param name="md_steps" value="500"/>
+            <param name="nvt_steps" value="50"/>
+            <param name="npt_steps" value="50"/>
+            <param name="temp" value="300"/>
+            <param name="write_freq" value="5000"/>
             <output name="output1" file="test_md.trr" ftype="trr" compare="sim_size"/>
         </test>
     </tests>
