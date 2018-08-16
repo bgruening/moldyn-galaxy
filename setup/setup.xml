@@ -1,0 +1,69 @@
+<tool id="setup" name="Create initial files: topology and GRO structure file." version="0.1.0">
+    <requirements>
+        <requirement type="package">gromacs</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+
+        ln -s '$pdb_input' ./pdb_input.pdb &&
+        gmx pdb2gmx -f ./pdb_input.pdb -o processed.gro -p topol.top -i posres.itp -water $h2o -ff $ff -${ignore_h}ignh &>> verbose.txt &&
+        gmx editconf -f processed.gro -o newbox.gro -c -d $box_d -bt $box_type &>> verbose.txt
+
+    ]]></command>
+
+    <inputs>
+        <param argument="pdb_input" type="data" format='pdb' label="PDB input file."/>
+        <param argument="h2o" type="select" label="Water model">
+            <option value="spce" selected="true">SPCE</option>
+            <!-- More here -->
+        </param>
+        <param argument="ff" type="select" label="Force field">
+            <option value="oplsaa" selected="true">OPLS/AA</option>
+            <option value="CHARMM">CHARMM</option>
+            <!-- More here -->
+        </param>
+        <param argument="ignore_h" type="boolean" label="Ignore hydrogens" truevalue="" falsevalue="no" help="ignore hydrogens" />
+        <param argument="box_d" type="float" label="Box dimensions" value="0.0" min="0.0" max="10.0" help="Box dimensions" />
+        <param argument="box_type" type="select" label="Box type"
+            help="triclinic is a triclinic box, cubic is a rectangular box with all sides equal dodecahedron represents a rhombic dodecahedron and octahedron is a truncated octahedron. The last two are special cases of a triclinic box. The length of the three box vectors of the truncated octahedron is the shortest distance between two opposite hexagons. Relative to a cubic box with some periodic image distance, the volume of a dodecahedron with this same periodic distance is 0.71 times that of the cube, and that of a truncated octahedron is 0.77 times.">
+            <option value="cubic">Rectangular box with all sides equal (cubic)</option>
+            <option value="triclinic">Triclinic</option>
+            <option value="dodecahedron">represents a rhombic dodecahedron (dodecahedron)</option>
+            <option value="octahedron">truncated octahedron (octahedron)</option>
+        </param>
+
+        <param name="capture_log" type="boolean" value="false" label="Generate Detailed Log" help="Generate detailed log information that can be summarized with ParseLog."/>
+
+    </inputs>
+    <outputs>
+        <!-- <data name="output1" format="trr" from_work_dir="md_0_1.trr"/> -->
+        <data name="output1" format="txt" from_work_dir="topol.top"/>
+        <data name="output2" format="txt" from_work_dir="newbox.gro"/>
+        <data name="report" format="txt" from_work_dir="verbose.txt">
+            <filter>capture_log</filter>
+        </data>
+    </outputs>
+    <tests>
+        <test>
+            <param name="pdb_input" value="1AKI.pdb" />
+            <param name="h2o" value="spce" />
+            <param name="ff" value="oplsaa" />
+            <param name="ignore_h" value="no" />
+            <param name="box_d" value="1.0" />
+            <param name="box_type" value="cubic" />
+            <output name="output1" file="topol.top" ftype="txt" compare="diff" lines_diff="10"/>
+            <output name="output2" file="newbox.gro" ftype="txt"/>
+        </test>
+    </tests>
+    <help><![CDATA[
+
+GROMACS is a versatile package to perform molecular dynamics, i.e. simulate the Newtonian equations of motion for systems with hundreds to millions of particles.
+
+It is primarily designed for biochemical molecules like proteins, lipids and nucleic acids that have a lot of complicated bonded interactions,
+but since GROMACS is extremely fast at calculating the nonbonded interactions (that usually dominate simulations) many groups are also using
+it for research on non-biological systems, e.g. polymers.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.1016/j.softx.2015.06.001</citation>
+    </citations>
+</tool>

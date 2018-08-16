@@ -1,0 +1,68 @@
+<tool id="protein" name="Energy minimization." version="0.1.0">
+    <requirements>
+        <requirement type="package">gromacs</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+
+        ln -s '$minim' ./minim.mdp &&
+        ln -s '$gro_input' ./solv_ions.gro &&
+        ln -s '$top_input' ./top_input.top &&
+  
+        gmx grompp -f ./minim.mdp -c ./solv_ions.gro -p ./top_input.top -o em.tpr &>> verbose.txt &&
+        gmx mdrun -deffnm em &>> verbose.txt
+        
+    ]]></command>
+        <configfiles>
+            <!-- .mdp files which are needed for the gromacs simulation -->
+            <configfile name="minim">
+; minim.mdp - used as input into grompp to generate em.tpr
+integrator  = steep    ; Algorithm (steep = steepest descent minimization)
+emtol    = 1000.0    ; Stop minimization when the maximum force is less than 1000.0 kJ/mol/nm
+emstep      = 0.01      ; Energy step size
+nsteps    = 50000      ; Maximum number of (minimization) steps to perform
+0
+; Parameters describing how to find the neighbors of each atom and how to calculate the interactions
+nstlist        = 1        ; Frequency to update the neighbor list and long range forces
+cutoff-scheme   = Verlet
+ns_type        = grid    ; Method to determine neighbor list (simple, grid)
+coulombtype      = PME    ; Treatment of long range electrostatic interactions
+rcoulomb      = 1.0    ; Short-range electrostatic cut-off
+rvdw        = 1.0    ; Short-range Van der Waals cut-off
+pbc            = xyz     ; Periodic Boundary Conditions (yes/no)
+            </configfile>
+
+        </configfiles>
+    <inputs>
+        <param argument="gro_input" type="data" format='txt' label="GRO structure file."/>
+        <param argument="top_input" type="data" format='txt' label="Topology (TOP) file."/>
+        
+        <param name="capture_log" type="boolean" value="false" label="Generate Detailed Log" help="Generate detailed log information that can be summarized with ParseLog."/>
+
+    </inputs>
+    <outputs>
+        <data name="output1" format="txt" from_work_dir="em.gro"/>
+        <data name="report" format="txt" from_work_dir="verbose.txt">
+            <filter>capture_log</filter>
+        </data>
+    </outputs>
+    <tests>
+        <test>
+            <param name="gro_input" value="solv_ions.gro" />
+            <param name="top_input" value="topol.top" />
+
+            <output name="output1" file="em.gro" ftype="txt" compare="sim_size"/>
+        </test>
+    </tests>
+    <help><![CDATA[
+
+GROMACS is a versatile package to perform molecular dynamics, i.e. simulate the Newtonian equations of motion for systems with hundreds to millions of particles.
+
+It is primarily designed for biochemical molecules like proteins, lipids and nucleic acids that have a lot of complicated bonded interactions,
+but since GROMACS is extremely fast at calculating the nonbonded interactions (that usually dominate simulations) many groups are also using
+it for research on non-biological systems, e.g. polymers.
+
+    ]]></help>
+    <citations>
+        <citation type="doi">10.1016/j.softx.2015.06.001</citation>
+    </citations>
+</tool>
