@@ -1,2 +1,2 @@
 # moldyn-galaxy
-Tools for molecular dynamics simulation and analysis in Galaxy.
+Tools for molecular dynamics simulation using GROMACS and analysis in Galaxy.
