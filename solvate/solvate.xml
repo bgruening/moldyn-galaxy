@@ -1,5 +1,4 @@
 <tool id="solvate" name="Add solvent (water) and ions." version="0.1.0">
-    <!-- Note: this wrapper is (for now) based on Justin Lemkul's GROMACS tutorial which can be found here: http://www.bevanlab.biochem.vt.edu/Pages/Personal/justin/gmx-tutorials/lysozyme/ -->
     <requirements>
         <requirement type="package">gromacs</requirement>
     </requirements>
