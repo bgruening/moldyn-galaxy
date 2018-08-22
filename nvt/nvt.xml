@@ -103,7 +103,7 @@ gen_seed  = -1    ; generate a random seed
         </data>
     </outputs>
     <tests>
-        <!-- <test>
+        <test>
             <param name="gro_input" value="em.gro" />
             <param name="top_input" value="topol.top" />
             <param name="itp_input" value="posres.itp" />
@@ -113,7 +113,7 @@ gen_seed  = -1    ; generate a random seed
             <param name="temperature" value="300"/>
             <output name="output1" file="nvt.gro" ftype="txt" compare="sim_size"/>
             <output name="output2" file="nvt.cpt" ftype="txt" compare="sim_size"/>
-        </test> -->
+        </test>
 
         <test>
             <param name="gro_input" value="em.gro" />
