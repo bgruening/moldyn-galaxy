@@ -4,7 +4,12 @@
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
 
-        ln -s '$minim' ./minim.mdp &&
+        #if $mdp_input:
+            ln -s '$mdp_input' ./minim.mdp &&
+        #else:
+            ln -s '$minim' ./minim.mdp &&
+        #end if
+
         ln -s '$gro_input' ./solv_ions.gro &&
         ln -s '$top_input' ./top_input.top &&
   
@@ -33,9 +38,10 @@ pbc            = xyz     ; Periodic Boundary Conditions (yes/no)
 
         </configfiles>
     <inputs>
+
         <param argument="gro_input" type="data" format='txt' label="GRO structure file."/>
         <param argument="top_input" type="data" format='txt' label="Topology (TOP) file."/>
-        
+        <param argument="mdp_input" type="data" format='mdp' label="MD parameters (MDP) file (optional; default settings if not set)." optional="true"/>
         <param name="capture_log" type="boolean" value="false" label="Generate Detailed Log" help="Generate detailed log information that can be summarized with ParseLog."/>
 
     </inputs>
@@ -52,6 +58,13 @@ pbc            = xyz     ; Periodic Boundary Conditions (yes/no)
 
             <output name="output1" file="em.gro" ftype="txt" compare="sim_size"/>
         </test>
+        <test>
+            <param name="gro_input" value="solv_ions.gro" />
+            <param name="top_input" value="topol.top" />
+            <param name="mdp_input" value="minim.mdp" />
+            <output name="output1" file="em.gro" ftype="txt" compare="sim_size"/>
+        </test>
+
     </tests>
     <help><![CDATA[
 

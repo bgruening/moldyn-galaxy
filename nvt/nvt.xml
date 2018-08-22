@@ -3,8 +3,13 @@
         <requirement type="package">gromacs</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
-
-        ln -s '$nvt' ./nvt.mdp &&
+        #if $mdp.mdpfile == "custom":
+            ln -s '$mdp.mdp_input' ./nvt.mdp &&
+        #end if
+        #if $mdp.mdpfile == "default":
+            ln -s '$nvt' ./nvt.mdp &&
+        #end if
+        
         ln -s '$gro_input' ./em.gro &&
         ln -s '$top_input' ./top_input.top &&
         ln -s '$itp_input' ./posres.itp &&
@@ -65,11 +70,28 @@ gen_seed  = -1    ; generate a random seed
         <param argument="gro_input" type="data" format='txt' label="GRO structure file."/>
         <param argument="top_input" type="data" format='txt' label="Topology (TOP) file."/>
         <param argument="itp_input" type="data" format='txt' label="Position restraint file."/>
-        <section name="mdp" title="MDP settings" expanded="false">
-            <param argument="nvt_steps" type="integer" label="Number of steps for the NVT equilibration" value="0" min="0" max="1000000" help="NVT steps" />
-            <param argument="temperature" type="integer" label="Temperature /K" value="0" min="0" max="1000000" help="Temperature" />
-            <param argument="step_length" type="float" label="Step length in ps" value="0" min="0.0001" max="1.0" help="Step length in ps." />
-        </section>
+
+        <conditional name="mdp">
+            <param name="mdpfile" type="select" label="Parameter input">
+                <option value="custom">Upload own MDP file</option>
+                <option value="default">Use default (partially customisable) setting</option>
+            </param>
+            <when value="custom">
+                <param argument="mdp_input" type="data" format='mdp' label="MD parameters (MDP) file (optional; default settings if not set)."/>
+                <param argument="nvt_steps" type="integer" label="Number of steps for the NVT equilibration" value="0" min="0" max="1000000" help="NVT steps" />
+                <param argument="temperature" type="integer" label="Temperature /K" value="0" min="0" max="1000000" help="Temperature" />
+                <param argument="step_length" type="float" label="Step length in ps" value="0.1" min="0.0001" max="1.0" help="Step length in ps." />
+
+            </when>
+            <when value="default">
+                 <!-- <section name="mdp" title="MDP settings" expanded="false"> -->
+                    <param argument="nvt_steps" type="integer" label="Number of steps for the NVT equilibration" value="0" min="0" max="1000000" help="NVT steps" />
+                    <param argument="temperature" type="integer" label="Temperature /K" value="0" min="0" max="1000000" help="Temperature" />
+                    <param argument="step_length" type="float" label="Step length in ps" value="0" min="0.0001" max="1.0" help="Step length in ps." />
+                <!-- </section> -->
+            </when>
+        </conditional>
+       
         <param name="capture_log" type="boolean" value="false" label="Generate Detailed Log" help="Generate detailed log information that can be summarized with ParseLog."/>
 
     </inputs>
@@ -81,13 +103,24 @@ gen_seed  = -1    ; generate a random seed
         </data>
     </outputs>
     <tests>
+        <!-- <test>
+            <param name="gro_input" value="em.gro" />
+            <param name="top_input" value="topol.top" />
+            <param name="itp_input" value="posres.itp" />
+            <param name="mdpfile" value="default" />
+            <param name="step_length" value="0.002"/>
+            <param name="nvt_steps" value="5000"/>
+            <param name="temperature" value="300"/>
+            <output name="output1" file="nvt.gro" ftype="txt" compare="sim_size"/>
+            <output name="output2" file="nvt.cpt" ftype="txt" compare="sim_size"/>
+        </test> -->
+
         <test>
             <param name="gro_input" value="em.gro" />
             <param name="top_input" value="topol.top" />
             <param name="itp_input" value="posres.itp" />
-            <param name="step_length" value="0.002"/>
-            <param name="nvt_steps" value="5000"/>
-            <param name="temperature" value="300"/>
+            <param name="mdp.mdpfile" value="custom" />
+            <param name="mdp_input" value="nvt.mdp" />
             <output name="output1" file="nvt.gro" ftype="txt" compare="sim_size"/>
             <output name="output2" file="nvt.cpt" ftype="txt" compare="sim_size"/>
         </test>
