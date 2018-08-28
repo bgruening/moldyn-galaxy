@@ -24,7 +24,7 @@
             <configfile name="md">
 title    = OPLS Lysozyme MD simulation 
 ; Run parameters
-integrator  = md    ; leap-frog integrator
+integrator  = $mdp.integrator    ; leap-frog integrator
 nsteps    = $mdp.md_steps  ; 2 * 500000 = 1000 ps (1 ns)
 dt        = $mdp.step_length    ; 2 fs
 ; Output control
@@ -34,11 +34,11 @@ nstenergy          = $mdp.write_freq    ; save energies every 10.0 ps
 nstlog            = $mdp.write_freq    ; update log file every 10.0 ps
 nstxout-compressed  = $mdp.write_freq      ; save compressed coordinates every 10.0 ps
                                 ; nstxout-compressed replaces nstxtcout
-compressed-x-grps   = System    ; replaces xtc-grps
+compressed-x-grps   = System    ; group(s) to write to the compressed trajectory file
 ; Bond parameters
 continuation          = yes    ; Restarting after NPT 
 constraint_algorithm    = lincs      ; holonomic constraints 
-constraints              = all-bonds  ; all bonds (even heavy atom-H bonds) constrained
+constraints              = $mdp.constraints  ; all bonds (even heavy atom-H bonds) constrained
 lincs_iter              = 1        ; accuracy of LINCS
 lincs_order              = 4        ; also related to accuracy
 ; Neighborsearching
@@ -92,11 +92,24 @@ gen_vel    = no    ; Velocity generation is off
 
             </when>
             <when value="default">
+                <param argument="integrator" type="select" label="Choice of integrator.">
+                    <option value="md">A leap-frog algorithm (md).</option>
+                    <option value="sd">A leap-frog stochastic dynamics integrator (sd).</option>
+                    <option value="bd">An Euler integrator for Brownian or position Langevin dynamics (bd).</option>
+                </param>
+                <param argument="constraints" type="select" label="Bond constraints (constraints).">
+                    <option value="none">No constraints except for those defined explicitly in the topology (none).</option>
+                    <option value="h-bonds">Bonds with H-atoms. (h-bonds).</option>
+                    <option value="all-bonds">All bonds (all-bonds).</option>
+                    <option value="h-angles">Bonds and angles with H-atoms. (h-angles).</option>
+                    <option value="all-angles">All bonds and angles (all-angles).</option>
+                </param>
+
                  <!-- <section name="mdp" title="MDP settings" expanded="false"> -->
-                    <param argument="md_steps" type="integer" label="Number of steps for the MD simulation" value="0" min="0" max="1000000" help="MD steps" />
-                    <param argument="temperature" type="integer" label="Temperature /K" value="0" min="0" max="1000000" help="Temperature" />
-                    <param argument="step_length" type="float" label="Step length in ps" value="0" min="0.0001" max="1.0" help="Step length in ps." />
-                    <param argument="write_freq" type="integer" label="Number of steps that elapse between saving data points (velocities, forces, energies)" value="0" min="0" max="1000000" help="Step length in ps." />
+                <param argument="md_steps" type="integer" label="Number of steps for the MD simulation" value="0" min="0" max="1000000" help="MD steps" />
+                <param argument="temperature" type="integer" label="Temperature /K" value="0" min="0" max="1000000" help="Temperature" />
+                <param argument="step_length" type="float" label="Step length in ps" value="0" min="0.0001" max="1.0" help="Step length in ps." />
+                <param argument="write_freq" type="integer" label="Number of steps that elapse between saving data points (velocities, forces, energies)" value="0" min="0" max="1000000" help="Step length in ps." />
                 <!-- </section> -->
             </when>
         </conditional>
@@ -122,6 +135,8 @@ gen_vel    = no    ; Velocity generation is off
             <param name="md_steps" value="500"/>
             <param name="temperature" value="300"/>
             <param name="write_freq" value="5000"/>
+            <param name="integrator" value="md"/>
+            <param name="constraints" value="all-bonds"/>
             <output name="output1" file="md.gro" ftype="txt" compare="sim_size"/>
             <output name="output2" file="md.trr" ftype="txt" compare="sim_size"/>
         </test>

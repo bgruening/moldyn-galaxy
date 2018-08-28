@@ -21,16 +21,16 @@
             <!-- .mdp files which are needed for the gromacs simulation -->
             <configfile name="minim">
 ; minim.mdp - used as input into grompp to generate em.tpr
-integrator  = steep    ; Algorithm (steep = steepest descent minimization)
-emtol    = 1000.0    ; Stop minimization when the maximum force is less than 1000.0 kJ/mol/nm
+integrator  = $mdp.integrator    ; Algorithm (steep = steepest descent minimization)
+emtol    = 10.0    ; Stop minimization when the maximum force is less than 1000.0 kJ/mol/nm
 emstep      = 0.01      ; Energy step size
 nsteps    = 50000      ; Maximum number of (minimization) steps to perform
 0
 ; Parameters describing how to find the neighbors of each atom and how to calculate the interactions
 nstlist        = 1        ; Frequency to update the neighbor list and long range forces
-cutoff-scheme   = Verlet
+cutoff-scheme   = $mdp.cutoffscheme
 ns_type        = grid    ; Method to determine neighbor list (simple, grid)
-coulombtype      = PME    ; Treatment of long range electrostatic interactions
+coulombtype      = $mdp.coulombtype    ; Treatment of long range electrostatic interactions
 rcoulomb      = 1.0    ; Short-range electrostatic cut-off
 rvdw        = 1.0    ; Short-range Van der Waals cut-off
 pbc            = xyz     ; Periodic Boundary Conditions (yes/no)
@@ -44,6 +44,44 @@ pbc            = xyz     ; Periodic Boundary Conditions (yes/no)
         <param argument="mdp_input" type="data" format='mdp' label="MD parameters (MDP) file (optional; default settings if not set)." optional="true"/>
         <param name="capture_log" type="boolean" value="false" label="Generate Detailed Log" help="Generate detailed log information that can be summarized with ParseLog."/>
 
+        <conditional name="mdp">
+            <param name="mdpfile" type="select" label="Parameter input">
+                <option value="custom">Upload own MDP file</option>
+                <option value="default">Use default (partially customisable) setting</option>
+            </param>
+            <when value="custom">
+                <param argument="integrator" type="select" label="Choice of integrator.">
+                    <option value="steep">Steepest descent algorithm.</option>
+                    <option value="cg">Conjugate gradient algorithm.</option>
+                    <option value="l-bfgs">Quasi-Newtonian algorithm.</option>
+                </param>
+                <param argument="cutoffscheme" type="select" label="Neighbor searching.">
+                    <option value="Verlet">Generate a pair list with buffering.</option>
+                    <option value="group">Generate a pair list for groups of atoms.</option>
+                </param>
+                <param argument="coulombtype" type="select" label="Electrostatics.">
+                    <option value="PME">Fast smooth Particle-Mesh Ewald (SPME) electrostatics.</option>
+                    <option value="P3M-AD">Particle-Particle Particle-Mesh algorithm with analytical derivative.</option>
+                    <option value="Reaction-Field-zero">Reaction field electrostatics.</option>
+                </param>
+                <param argument="rcoulomb" type="integer" label="MD parameters (MDP) file (optional; default settings if not set)."/>
+                
+                <param argument="mdp_input" type="data" format='mdp' label="MD parameters (MDP) file (optional; default settings if not set)."/>
+                <param argument="md_steps" type="integer" label="Number of steps for the MD simulation" value="0" min="0" max="1000000" help="MD steps" />
+                <param argument="temperature" type="integer" label="Temperature /K" value="0" min="0" max="1000000" help="Temperature" />
+                <param argument="step_length" type="float" label="Step length in ps" value="0.1" min="0.0001" max="1.0" help="Step length in ps." />
+                <param argument="write_freq" type="integer" label="Number of steps that elapse between saving data points (velocities, forces, energies)" value="1" min="0" max="1000000" help="Step length in ps." />
+
+            </when>
+            <when value="default">
+                 <!-- <section name="mdp" title="MDP settings" expanded="false"> -->
+                    <param argument="md_steps" type="integer" label="Number of steps for the MD simulation" value="0" min="0" max="1000000" help="MD steps" />
+                    <param argument="temperature" type="integer" label="Temperature /K" value="0" min="0" max="1000000" help="Temperature" />
+                    <param argument="step_length" type="float" label="Step length in ps" value="0" min="0.0001" max="1.0" help="Step length in ps." />
+                    <param argument="write_freq" type="integer" label="Number of steps that elapse between saving data points (velocities, forces, energies)" value="0" min="0" max="1000000" help="Step length in ps." />
+                <!-- </section> -->
+            </when>
+        </conditional>
     </inputs>
     <outputs>
         <data name="output1" format="txt" from_work_dir="em.gro"/>
