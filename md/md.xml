@@ -17,7 +17,12 @@
 
         gmx grompp -f ./md.mdp -c ./npt.gro -t ./npt.cpt -p ./top_input.top -o md_0_1.tpr &>> verbose.txt &&
         gmx mdrun -deffnm md_0_1 &>> verbose.txt
-        
+ 
+        #if $str == 'pdb' or $str == 'both'
+            && gmx editconf -f md_0_1.gro -o md_0_1.pdb &>> verbose.txt
+        #end if
+
+
     ]]></command>
         <configfiles>
             <!-- .mdp files which are needed for the gromacs simulation -->
@@ -75,7 +80,7 @@ gen_vel    = no    ; Velocity generation is off
     <inputs>
         <param argument="gro_input" type="data" format='txt' label="GRO structure file."/>
         <param argument="top_input" type="data" format='txt' label="Topology (TOP) file."/>
-        <param argument="cpt_input" type="data" format='txt' label="Checkpoint (CPT) file from NVT run."/>
+        <param argument="cpt_input" type="data" format='cpt' label="Checkpoint (CPT) file from NVT run."/>
         <param argument="itp_input" type="data" format='txt' label="Position restraint file."/>
         
         <conditional name="mdp">
@@ -85,6 +90,7 @@ gen_vel    = no    ; Velocity generation is off
             </param>
             <when value="custom">
                 <param argument="mdp_input" type="data" format='mdp' label="MD parameters (MDP) file (optional; default settings if not set)."/>
+                <!-- want to remove the below lines but need to work out how to make configfile optional -->
                 <param argument="md_steps" type="integer" label="Number of steps for the MD simulation" value="0" min="0" max="1000000" help="MD steps" />
                 <param argument="temperature" type="integer" label="Temperature /K" value="0" min="0" max="1000000" help="Temperature" />
                 <param argument="step_length" type="float" label="Step length in ps" value="0.1" min="0.0001" max="1.0" help="Step length in ps." />
@@ -114,12 +120,37 @@ gen_vel    = no    ; Velocity generation is off
             </when>
         </conditional>
         
+        <param argument="traj" type="select" label="Trajectory output.">
+            <option value='none'>Return no trajectory output</option>
+            <option value='xtc'>Return .xtc file (reduced precision)</option>
+            <option value='trr'>Return .trr file (full precision)</option>
+            <option value='both'>Return both .xtc and .trr files</option>
+        </param>
+
+        <param argument="str" type="select" label="Structure output.">
+            <option value='none'>Return no trajectory output</option>
+            <option value='gro'>Return .gro file</option>
+            <option value='pdb'>Return .pdb file</option>
+            <option value='both'>Return both .gro and .pdb files</option>
+        </param>
+
         <param name="capture_log" type="boolean" value="false" label="Generate Detailed Log" help="Generate detailed log information that can be summarized with ParseLog."/>
 
     </inputs>
     <outputs>
-        <data name="output1" format="txt" from_work_dir="md_0_1.gro"/>
-        <data name="output2" format="txt" from_work_dir="md_0_1.trr"/>
+        <data name="output1" format="txt" from_work_dir="md_0_1.gro">
+            <filter>str == 'gro' or str == 'both'</filter>
+        </data>
+        <data name="output2" format="pdb" from_work_dir="md_0_1.pdb">
+            <filter>str == 'pdb' or str == 'both'</filter>
+        </data>
+        <data name="output3" format="trr" from_work_dir="md_0_1.trr">
+            <filter>traj == 'trr' or traj == 'both'</filter>
+        </data>
+        <data name="output4" format="xtc" from_work_dir="md_0_1.xtc">
+            <filter>traj == 'xtc' or traj == 'both'</filter>
+        </data>
+
         <data name="report" format="txt" from_work_dir="verbose.txt">
             <filter>capture_log</filter>
         </data>
@@ -137,19 +168,46 @@ gen_vel    = no    ; Velocity generation is off
             <param name="write_freq" value="5000"/>
             <param name="integrator" value="md"/>
             <param name="constraints" value="all-bonds"/>
-            <output name="output1" file="md.gro" ftype="txt" compare="sim_size"/>
-            <output name="output2" file="md.trr" ftype="txt" compare="sim_size"/>
+            <param name="traj" value="trr"/>
+            <param name="str" value="both"/>
+            <output name="output1" file="md_0_1.gro" ftype="txt" compare="sim_size"/>
+            <output name="output2" file="md_0_1.pdb" ftype="pdb" compare="sim_size"/>
+            <output name="output3" file="md_0_1.trr" ftype="trr" compare="sim_size"/>
         </test>
         <test>
             <param name="gro_input" value="npt.gro" />
             <param name="top_input" value="topol.top" />
             <param name="cpt_input" value="npt.cpt" />
             <param name="itp_input" value="posres.itp" />
+            <param name="mdpfile" value="default" />
+            <param name="step_length" value="0.002"/>
+            <param name="md_steps" value="500"/>
+            <param name="temperature" value="300"/>
+            <param name="write_freq" value="5000"/>
+            <param name="integrator" value="md"/>
+            <param name="constraints" value="all-bonds"/>
+            <param name="traj" value="xtc"/>
+            <param name="str" value="pdb"/>
+            <output name="output2" file="md_0_1.pdb" ftype="pdb" compare="sim_size"/>
+            <output name="output4" file="md_0_1.xtc" ftype="xtc" compare="sim_size"/>
+        </test>
+        <!-- <test>
+            <param name="gro_input" value="npt.gro" />
+            <param name="top_input" value="topol.top" />
+            <param name="cpt_input" value="npt.cpt" />
+            <param name="itp_input" value="posres.itp" />
             <param name="mdpfile" value="custom" />
             <param name="mdp_input" value="md.mdp" />
+            <param name="traj" value="trr"/>
+            <param name="step_length" value="0.002"/>
+            <param name="md_steps" value="500"/>
+            <param name="temperature" value="300"/>
+            <param name="write_freq" value="5000"/>
+            <param name="integrator" value="md"/>
+            <param name="constraints" value="all-bonds"/>
             <output name="output1" file="md.gro" ftype="txt" compare="sim_size"/>
-            <output name="output2" file="md.trr" ftype="txt" compare="sim_size"/>
-        </test>
+            <output name="output3" file="md.trr" ftype="trr" compare="sim_size"/>
+        </test> -->
     </tests>
     <help><![CDATA[
 

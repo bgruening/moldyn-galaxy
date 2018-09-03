@@ -15,8 +15,11 @@
         ln -s '$itp_input' ./posres.itp &&
 
         gmx grompp -f ./nvt.mdp -c ./em.gro -r ./em.gro -p ./top_input.top -o nvt.tpr &>> verbose.txt &&
-        gmx mdrun -deffnm nvt &>> verbose.txt
+        gmx mdrun -deffnm nvt &>> verbose.txt &&
         
+        #if $str == 'pdb' or $str == 'both'
+            gmx editconf -f nvt.gro -o nvt.pdb &>> verbose.txt
+        #end if
     ]]></command>
         <configfiles>
             <!-- .mdp files which are needed for the gromacs simulation -->
@@ -28,10 +31,11 @@ integrator  = md    ; leap-frog integrator
 nsteps      = $mdp.nvt_steps    ; 2 * 50000 = 100 ps
 dt          = $mdp.step_length    ; 2 fs
 ; Output control
-nstxout     = 500    ; save coordinates every 1.0 ps
-nstvout     = 500    ; save velocities every 1.0 ps
-nstenergy   = 500    ; save energies every 1.0 ps
-nstlog      = 500    ; update log file every 1.0 ps
+nstxout     = $mdp.write_freq    ; save coordinates every n ps
+nstvout     = $mdp.write_freq    ; save velocities every n ps
+nstenergy   = $mdp.write_freq    ; save energies every n ps
+nstlog      = $mdp.write_freq    ; update log file every n ps
+nstxout-compressed  = $mdp.write_freq      ; save compressed coordinates every 10.0 ps
 ; Bond parameters
 continuation          = no    ; first dynamics run
 constraint_algorithm  = lincs      ; holonomic constraints 
@@ -81,23 +85,49 @@ gen_seed  = -1    ; generate a random seed
                 <param argument="nvt_steps" type="integer" label="Number of steps for the NVT equilibration" value="0" min="0" max="1000000" help="NVT steps" />
                 <param argument="temperature" type="integer" label="Temperature /K" value="0" min="0" max="1000000" help="Temperature" />
                 <param argument="step_length" type="float" label="Step length in ps" value="0.1" min="0.0001" max="1.0" help="Step length in ps." />
-
+                <param argument="write_freq" type="integer" label="Number of steps that elapse between saving data points (velocities, forces, energies)" value="0" min="0" max="1000000" help="Step length in ps." />
             </when>
             <when value="default">
                  <!-- <section name="mdp" title="MDP settings" expanded="false"> -->
                     <param argument="nvt_steps" type="integer" label="Number of steps for the NVT equilibration" value="0" min="0" max="1000000" help="NVT steps" />
                     <param argument="temperature" type="integer" label="Temperature /K" value="0" min="0" max="1000000" help="Temperature" />
                     <param argument="step_length" type="float" label="Step length in ps" value="0" min="0.0001" max="1.0" help="Step length in ps." />
+                    <param argument="write_freq" type="integer" label="Number of steps that elapse between saving data points (velocities, forces, energies)" value="0" min="0" max="1000000" help="Step length in ps." />
                 <!-- </section> -->
             </when>
         </conditional>
        
+        <param argument="traj" type="select" label="Trajectory output.">
+            <option value='none'>Return no trajectory output</option>
+            <option value='xtc'>Return .xtc file (reduced precision)</option>
+            <option value='trr'>Return .trr file (full precision)</option>
+            <option value='both'>Return both .xtc and .trr files</option>
+        </param>
+
+        <param argument="str" type="select" label="Structure output.">
+            <option value='none'>Return no trajectory output</option>
+            <option value='gro'>Return .gro file</option>
+            <option value='pdb'>Return .pdb file</option>
+            <option value='both'>Return both .gro and .pdb files</option>
+        </param>
+
         <param name="capture_log" type="boolean" value="false" label="Generate Detailed Log" help="Generate detailed log information that can be summarized with ParseLog."/>
 
     </inputs>
     <outputs>
-        <data name="output1" format="txt" from_work_dir="nvt.gro"/>
-        <data name="output2" format="txt" from_work_dir="nvt.cpt"/>
+        <data name="output1" format="txt" from_work_dir="nvt.gro">
+            <filter>str == 'gro' or str == 'both'</filter>
+        </data>
+        <data name="output5" format="pdb" from_work_dir="nvt.pdb">
+            <filter>str == 'pdb' or str == 'both'</filter>
+        </data>
+        <data name="output2" format="cpt" from_work_dir="nvt.cpt"/>
+        <data name="output3" format="trr" from_work_dir="nvt.trr">
+            <filter>traj == 'trr' or traj == 'both'</filter>
+        </data>
+        <data name="output4" format="xtc" from_work_dir="nvt.xtc">
+            <filter>traj == 'xtc' or traj == 'both'</filter>
+        </data>
         <data name="report" format="txt" from_work_dir="verbose.txt">
             <filter>capture_log</filter>
         </data>
@@ -109,13 +139,50 @@ gen_seed  = -1    ; generate a random seed
             <param name="itp_input" value="posres.itp" />
             <param name="mdpfile" value="default" />
             <param name="step_length" value="0.002"/>
-            <param name="nvt_steps" value="5000"/>
+            <param name="nvt_steps" value="500"/>
+            <param name="write_freq" value="500"/>
             <param name="temperature" value="300"/>
+            <param name="traj" value="xtc"/>
+            <param name="str" value="both"/>
             <output name="output1" file="nvt.gro" ftype="txt" compare="sim_size"/>
-            <output name="output2" file="nvt.cpt" ftype="txt" compare="sim_size"/>
+            <output name="output2" file="nvt.cpt" ftype="cpt" compare="sim_size"/>
+            <output name="output4" file="nvt.xtc" ftype="xtc" compare="sim_size"/>
+            <output name="output5" file="nvt.pdb" ftype="pdb" compare="sim_size"/>
+            
+        </test>
+        <test>
+            <param name="gro_input" value="em.gro" />
+            <param name="top_input" value="topol.top" />
+            <param name="itp_input" value="posres.itp" />
+            <param name="mdpfile" value="default" />
+            <param name="step_length" value="0.002"/>
+            <param name="nvt_steps" value="500"/>
+            <param name="write_freq" value="500"/>
+            <param name="temperature" value="300"/>
+            <param name="traj" value="xtc"/>
+            <param name="str" value="pdb"/>
+            <output name="output2" file="nvt.cpt" ftype="cpt" compare="sim_size"/>
+            <output name="output4" file="nvt.xtc" ftype="xtc" compare="sim_size"/>
+            <output name="output5" file="nvt.pdb" ftype="pdb" compare="sim_size"/>
+    
         </test>
 
-        <test>
+
+        <!-- <test>
+            <param name="gro_input" value="em.gro" />
+            <param name="top_input" value="topol.top" />
+            <param name="itp_input" value="posres.itp" />
+            <param name="mdpfile" value="default" />
+            <param name="step_length" value="0.002"/>
+            <param name="nvt_steps" value="500"/>
+            <param name="write_freq" value="500"/>
+            <param name="temperature" value="300"/>
+            <param name="traj" value="trr"/>
+            <output name="output1" file="nvt.gro" ftype="txt" compare="sim_size"/>
+            <output name="output2" file="nvt.cpt" ftype="cpt" compare="sim_size"/>
+            <output name="output3" file="nvt.trr" ftype="trr" compare="sim_size"/>
+        </test> -->
+        <!-- <test>
             <param name="gro_input" value="em.gro" />
             <param name="top_input" value="topol.top" />
             <param name="itp_input" value="posres.itp" />
@@ -123,7 +190,7 @@ gen_seed  = -1    ; generate a random seed
             <param name="mdp_input" value="nvt.mdp" />
             <output name="output1" file="nvt.gro" ftype="txt" compare="sim_size"/>
             <output name="output2" file="nvt.cpt" ftype="txt" compare="sim_size"/>
-        </test>
+        </test> -->
     </tests>
     <help><![CDATA[
 

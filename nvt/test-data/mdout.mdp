@@ -2,7 +2,7 @@
 ;	File 'mdout.mdp' was generated
 ;	By user: unknown (1000)
 ;	On host: simon-laptop
-;	At date: Fri Aug 17 00:53:21 2018
+;	At date: Sat Sep  1 15:27:18 2018
 ;
 ;	Created by:
 ;	                     :-) GROMACS - gmx grompp, 2018.2 (-:
@@ -11,7 +11,7 @@
 ;	Data prefix:  /home/simon/miniconda3/envs/gromacs2
 ;	Working dir:  /home/simon/moldyn-galaxy/nvt/test-data
 ;	Command line:
-;	  gmx grompp -f nvt.mdp -c em.gro -r em.gro -p topol.top -o nvt.tpr
+;	  gmx grompp -f nvt.mdp -c ./em.gro -r ./em.gro -p topol.top -o nvt.tpr
 
 ; VARIOUS PREPROCESSING OPTIONS
 ; Preprocessor information: use cpp syntax.
@@ -25,7 +25,7 @@ integrator               = md
 ; Start time and timestep in ps
 tinit                    = 0
 dt                       = 0.002
-nsteps                   = 5000
+nsteps                   = 500
 ; For exact run continuation or redoing part of a run
 init-step                = 0
 ; Part index is updated automatically on checkpointing (keeps files separate)
@@ -67,7 +67,7 @@ nstlog                   = 500
 nstcalcenergy            = 100
 nstenergy                = 500
 ; Output frequency and precision for .xtc file
-nstxout-compressed       = 0
+nstxout-compressed       = 500
 compressed-x-precision   = 1000
 ; This selects the subset of atoms for the compressed
 ; trajectory file. You can select multiple groups. By
