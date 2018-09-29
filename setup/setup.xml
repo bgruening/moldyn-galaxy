@@ -11,17 +11,39 @@
     ]]></command>
 
     <inputs>
+        <!-- PDB2GMX VARS -->
         <param argument="pdb_input" type="data" format='pdb' label="PDB input file."/>
         <param argument="h2o" type="select" label="Water model">
-            <option value="spce" selected="true">SPCE</option>
-            <!-- More here -->
+            <option value="tip3p" selected="true">TIP3P</option>
+            <option value="tip4p">TIP4P</option>
+            <option value="tips3p">TIPS3P</option>
+            <option value="tip5p">TIP5P</option>
+            <option value="spc">SPC</option>
+            <option value="spce">SPC/E</option>
+            <option value="none">None</option>
         </param>
+
         <param argument="ff" type="select" label="Force field">
             <option value="oplsaa" selected="true">OPLS/AA</option>
-            <option value="CHARMM">CHARMM</option>
-            <!-- More here -->
+            <option value="gromos43a1">GROMOS43A1</option>
+            <option value="amber96">AMBER96</option>
+            <option value="gromos53a6">GROMOS53A6</option>
+            <option value="amber99sb-ildn">AMBER99SB-ILDN</option>
+            <option value="amber99sb">AMBER99SB</option>
+            <option value="gromos53a5">GROMOS53A5</option>
+            <option value="gromos43a2">GROMOS43A2</option>
+            <option value="amberGS">AMBERGS</option>
+            <option value="charmm27">CHARMM27</option>
+            <option value="amber03">AMBER03</option>
+            <option value="gromos54a7">GROMOS54A7</option>
+            <option value="gromos45a3">GROMOS45A3</option>
+            <option value="amber99">AMBER99</option>
+            <option value="amber94">AMBER94</option>
         </param>
+
         <param argument="ignore_h" type="boolean" label="Ignore hydrogens" truevalue="" falsevalue="no" help="ignore hydrogens" />
+        
+        <!-- EDITCONF VARS -->
         <param argument="box_d" type="float" label="Box dimensions" value="0.0" min="0.0" max="10.0" help="Box dimensions" />
         <param argument="box_type" type="select" label="Box type"
             help="triclinic is a triclinic box, cubic is a rectangular box with all sides equal dodecahedron represents a rhombic dodecahedron and octahedron is a truncated octahedron. The last two are special cases of a triclinic box. The length of the three box vectors of the truncated octahedron is the shortest distance between two opposite hexagons. Relative to a cubic box with some periodic image distance, the volume of a dodecahedron with this same periodic distance is 0.71 times that of the cube, and that of a truncated octahedron is 0.77 times.">
