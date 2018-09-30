@@ -8,7 +8,7 @@
         ln -s '$gro_input' ./gro_input.gro &&
         ln -s '$top_input' ./top_input.top &&
 
-        gmx solvate -cp ./gro_input.gro -cs $water_model.gro -o solv.gro -p ./top_input.top &>> verbose.txt &&
+        gmx solvate -cp ./gro_input.gro -cs ${water_model}.gro -o solv.gro -p ./top_input.top &>> verbose.txt &&
 
         gmx grompp -f ./ions.mdp -c solv.gro -p ./top_input.top -o ions.tpr -maxwarn 1 &>> verbose.txt &&
 
@@ -35,7 +35,7 @@ pbc            = xyz
     <inputs>
         <param argument="gro_input" type="data" format='gro' label="GRO structure file."/>
         <param argument="top_input" type="data" format='top' label="Topology (TOP) file."/>
-        <param name="water_model" type="select"  label="Water model for solvation."/>
+        <param name="water_model" type="select"  label="Water model for solvation.">
             <option value="tip3p">TIP3P</option>
             <option value="tip4p">TIP4P</option>
             <option value="spc216">SPC</option>

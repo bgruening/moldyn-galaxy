@@ -93,7 +93,7 @@ gen_seed  = -1    ; generate a random seed
                 <param argument="temperature" type="integer" label="Temperature /K" value="0" min="0" max="1000000" help="Temperature" />
                 <param argument="step_length" type="float" label="Step length in ps" value="0" min="0.0001" max="1.0" help="Step length in ps." />
                 <param argument="write_freq" type="integer" label="Number of steps that elapse between saving data points (velocities, forces, energies)" value="0" min="0" max="1000000" help="Step length in ps." />
-                <param argument="rcoulomb" type="float" label="Distance for the Coulomb cut-off."/>
+                <param argument="rcoulomb" value="1.0" type="float" label="Distance for the Coulomb cut-off."/>
                 <param argument="rlist" value="1.0" type="float" label="Cut-off distance for the short-range neighbor list. Ignored if the Verlet cutoff scheme is set."/>
                 <param argument="rvdw" value="1.0" type="float" label="Short range van der Waals cutoff."/>
                 <param argument="integrator" type="select" label="Choice of integrator.">
@@ -172,13 +172,13 @@ gen_seed  = -1    ; generate a random seed
             <param name="cutoffscheme" value="Verlet" />
             <param name="constraints" value="all-bonds"/>
             <param name="coulombtype" value="PME" />
-            <output name="output1" file="nvt.gro" ftype="txt" compare="sim_size"/>
+            <output name="output1" file="nvt.gro" ftype="gro" compare="sim_size"/>
             <output name="output2" file="nvt.cpt" ftype="cpt" compare="sim_size"/>
             <output name="output4" file="nvt.xtc" ftype="xtc" compare="sim_size"/>
             <output name="output5" file="nvt.pdb" ftype="pdb" compare="sim_size"/>
             
         </test>
-        <test>
+        <!-- <test>
             <param name="gro_input" value="em.gro" />
             <param name="top_input" value="topol.top" />
             <param name="itp_input" value="posres.itp" />
@@ -197,7 +197,7 @@ gen_seed  = -1    ; generate a random seed
             <output name="output4" file="nvt.xtc" ftype="xtc" compare="sim_size"/>
             <output name="output5" file="nvt.pdb" ftype="pdb" compare="sim_size"/>
     
-        </test>
+        </test> -->
 
 
         <!-- <test>

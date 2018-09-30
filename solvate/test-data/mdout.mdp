@@ -1,18 +1,17 @@
 ;
 ;	File 'mdout.mdp' was generated
-;	By user: sb635 (40961)
-;	On host: bmd2
-;	At date: Sun Sep 30 18:40:10 2018
-
+;	By user: unknown (1000)
+;	On host: simon-laptop
+;	At date: Sun Sep 30 23:46:09 2018
 ;
 ;	Created by:
-;	                     :-) GROMACS - gmx grompp, 2016.4 (-:
+;	                     :-) GROMACS - gmx grompp, 2018.2 (-:
 ;	
-;	Executable:   /usr/local/gromacs-2016.4/bin/gmx
-;	Data prefix:  /usr/local/gromacs-2016.4
-;	Working dir:  /home/sb635/moldyn-galaxy/solvate/test-data
+;	Executable:   /home/simon/miniconda3/envs/gromacs2/bin/gmx
+;	Data prefix:  /home/simon/miniconda3/envs/gromacs2
+;	Working dir:  /home/simon/moldyn-galaxy/solvate/test-data
 ;	Command line:
-;	  gmx grompp -f test.mdp -c solv.gro -p topol3.top -o test.tpr
+;	  gmx grompp -f ions.mdp -c solv.gro -p topol.top -o ions.tpr -maxwarn 1
 
 ; VARIOUS PREPROCESSING OPTIONS
 ; Preprocessor information: use cpp syntax.
@@ -26,7 +25,7 @@ integrator               = steep
 ; Start time and timestep in ps
 tinit                    = 0
 dt                       = 0.001
-nsteps                   = 1
+nsteps                   = 50000
 ; For exact run continuation or redoing part of a run
 init-step                = 0
 ; Part index is updated automatically on checkpointing (keeps files separate)
@@ -200,9 +199,6 @@ SAoff                    =
 SAsteps                  = 
 ; Scale factor for MM charges
 MMChargeScaleFactor      = 1
-; Optimization of QM subsystem
-bOPT                     = 
-bTS                      = 
 
 ; SIMULATED ANNEALING  
 ; Type of annealing for each temperature group (no/single/periodic)
@@ -256,6 +252,9 @@ wall-ewald-zfac          = 3
 
 ; COM PULLING          
 pull                     = no
+
+; AWH biasing          
+awh                      = no
 
 ; ENFORCED ROTATION    
 ; Enforced rotation: No or Yes
@@ -328,19 +327,6 @@ simulated-tempering-scaling = geometric
 sim-temp-low             = 300
 sim-temp-high            = 300
 
-; Electric fields      
-; Format is number of terms (int) and for all terms an amplitude (real)
-; and a phase angle (real)
-E-x                      = 
-; Time dependent (pulsed) electric field. Format is omega, time for pulse
-; peak, and sigma (width) for pulse. Sigma = 0 removes pulse, leaving
-; the field to be a cosine function.
-E-xt                     = 
-E-y                      = 
-E-yt                     = 
-E-z                      = 
-E-zt                     = 
-
 ; Ion/water position swapping for computational electrophysiology setups
 ; Swap positions along direction: no, X, Y, Z
 swapcoords               = no
@@ -357,3 +343,11 @@ userreal1                = 0
 userreal2                = 0
 userreal3                = 0
 userreal4                = 0
+; Electric fields
+; Format for electric-field-x, etc. is: four real variables:
+; amplitude (V/nm), frequency omega (1/ps), time for the pulse peak (ps),
+; and sigma (ps) width of the pulse. Omega = 0 means static field,
+; sigma = 0 means no pulse, leaving the field to be a cosine function.
+electric-field-x         = 0 0 0 0
+electric-field-y         = 0 0 0 0
+electric-field-z         = 0 0 0 0

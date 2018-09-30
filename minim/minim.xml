@@ -51,6 +51,14 @@ pbc            = xyz     ; Periodic Boundary Conditions (yes/no)
                 <option value="default">Use default (partially customisable) setting</option>
             </param>
             <when value="custom">
+                <param argument="mdp_input" type="data" format='mdp' label="MD parameters (MDP) file (optional; default settings if not set)."/>
+            </when>
+
+            <when value="default">
+                <!-- <param argument="md_steps" type="integer" label="Number of steps for the MD simulation" value="0" min="0" max="1000000" help="MD steps" />
+                <param argument="temperature" type="integer" label="Temperature /K" value="0" min="0" max="1000000" help="Temperature" />
+                <param argument="step_length" type="float" label="Step length in ps" value="0" min="0.0001" max="1.0" help="Step length in ps." />
+                <param argument="write_freq" type="integer" label="Number of steps that elapse between saving data points (velocities, forces, energies)" value="0" min="0" max="1000000" help="Step length in ps." /> -->
                 <param argument="integrator" type="select" label="Choice of integrator.">
                     <option value="steep">Steepest descent algorithm.</option>
                     <option value="cg">Conjugate gradient algorithm.</option>
@@ -65,23 +73,13 @@ pbc            = xyz     ; Periodic Boundary Conditions (yes/no)
                     <option value="P3M-AD">Particle-Particle Particle-Mesh algorithm with analytical derivative.</option>
                     <option value="Reaction-Field-zero">Reaction field electrostatics.</option>
                 </param>
-                <param argument="rcoulomb" type="float" label="Distance for the Coulomb cut-off."/>
+                <param argument="rcoulomb" value="1.0" type="float" label="Distance for the Coulomb cut-off."/>
                 <param argument="rlist" value="1.0" type="float" label="Cut-off distance for the short-range neighbor list. Ignored if the Verlet cutoff scheme is set."/>
                 <param argument="rvdw" value="1.0" type="float" label="Short range van der Waals cutoff."/>
-                <param argument="mdp_input" value="1.0" type="data" format='mdp' label="MD parameters (MDP) file (optional; default settings if not set)."/>
                 <param argument="md_steps" type="integer" label="Number of steps for the MD simulation" value="0" min="0" max="1000000" help="MD steps" />
                 <param argument="emtol" type="float" label="EM tolerance" value="0" min="0" max="10000" help="The minimization is converged when the maximum force is smaller than this value" />
                 <param argument="emstep" type="float" label="Maximum step size /nm" value="0.01" min="0.0001" max="1.0" help="Initial step size in nm." />
-                <param argument="write_freq" type="integer" label="Number of steps that elapse between saving data points (velocities, forces, energies)" value="1" min="0" max="1000000" help="Step length in ps." />
-
-            </when>
-            <when value="default">
-                 <!-- <section name="mdp" title="MDP settings" expanded="false"> -->
-                    <param argument="md_steps" type="integer" label="Number of steps for the MD simulation" value="0" min="0" max="1000000" help="MD steps" />
-                    <param argument="temperature" type="integer" label="Temperature /K" value="0" min="0" max="1000000" help="Temperature" />
-                    <param argument="step_length" type="float" label="Step length in ps" value="0" min="0.0001" max="1.0" help="Step length in ps." />
-                    <param argument="write_freq" type="integer" label="Number of steps that elapse between saving data points (velocities, forces, energies)" value="0" min="0" max="1000000" help="Step length in ps." />
-                <!-- </section> -->
+                <!-- <param argument="write_freq" type="integer" label="Number of steps that elapse between saving data points (velocities, forces, energies)" value="1" min="0" max="1000000" help="Step length in ps." /> -->
             </when>
         </conditional>
     </inputs>
@@ -95,6 +93,7 @@ pbc            = xyz     ; Periodic Boundary Conditions (yes/no)
         <test>
             <param name="gro_input" value="solv_ions.gro" />
             <param name="top_input" value="topol.top" />
+            <param name="mdpfile" value="default" />
             <param name="integrator" value="steep" />
             <param name="cutoffscheme" value="Verlet" />
             <param name="coulombtype" value="PME" />
@@ -106,12 +105,12 @@ pbc            = xyz     ; Periodic Boundary Conditions (yes/no)
 
             <output name="output1" file="em.gro" ftype="gro" compare="sim_size"/>
         </test>
-        <test>
+        <!-- <test>
             <param name="gro_input" value="solv_ions.gro" />
             <param name="top_input" value="topol.top" />
             <param name="mdp_input" value="minim.mdp" />
             <output name="output1" file="em.gro" ftype="gro" compare="sim_size"/>
-        </test>
+        </test> -->
 
     </tests>
     <help><![CDATA[
