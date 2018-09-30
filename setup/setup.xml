@@ -58,8 +58,8 @@
     </inputs>
     <outputs>
         <!-- <data name="output1" format="trr" from_work_dir="md_0_1.trr"/> -->
-        <data name="output1" format="txt" from_work_dir="topol.top"/>
-        <data name="output2" format="txt" from_work_dir="newbox.gro"/>
+        <data name="output1" format="gro" from_work_dir="topol.top"/>
+        <data name="output2" format="gro" from_work_dir="newbox.gro"/>
         <data name="report" format="txt" from_work_dir="verbose.txt">
             <filter>capture_log</filter>
         </data>
@@ -72,8 +72,8 @@
             <param name="ignore_h" value="no" />
             <param name="box_d" value="1.0" />
             <param name="box_type" value="cubic" />
-            <output name="output1" file="topol.top" ftype="txt" compare="diff" lines_diff="10"/>
-            <output name="output2" file="newbox.gro" ftype="txt"/>
+            <output name="output1" file="topol.top" ftype="top" compare="diff" lines_diff="10"/>
+            <output name="output2" file="newbox.gro" ftype="gro"/>
         </test>
     </tests>
     <help><![CDATA[
