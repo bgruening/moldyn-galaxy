@@ -1,4 +1,4 @@
-<tool id="protein" name="MD simulation." version="0.1.0">
+<tool id="protein" name="MD production simulation." version="0.1.0">
     <requirements>
         <requirement type="package">gromacs</requirement>
     </requirements>
