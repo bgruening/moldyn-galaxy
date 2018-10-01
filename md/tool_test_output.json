@@ -1,1 +1,1 @@
-{"tests": [], "version": "0.1", "exit_code": 0, "summary": {"num_skips": 0, "num_errors": 0, "num_failures": 0, "num_tests": 0}}
+{"tests": [{"data": null, "id": "functional.test_toolbox.TestForTool_protein.test_tool_000000", "has_data": false}, {"data": null, "id": "functional.test_toolbox.TestForTool_protein.test_tool_000001", "has_data": false}], "version": "0.1", "exit_code": 1, "summary": {"num_skips": 0, "num_errors": 0, "num_failures": 2, "num_tests": 2}}

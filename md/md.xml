@@ -50,8 +50,6 @@ lincs_order              = 4        ; also related to accuracy
 cutoff-scheme   = $mdp.cutoffscheme
 ns_type        = grid    ; search neighboring grid cells
 nstlist        = 10      ; 20 fs, largely irrelevant with Verlet scheme
-rcoulomb      = 1.0    ; short-range electrostatic cutoff (in nm)
-rvdw        = 1.0    ; short-range van der Waals cutoff (in nm)
 rcoulomb      = $mdp.rcoulomb    ; Short-range electrostatic cut-off
 rlist       = $mdp.rlist ; Cut-off distance for the short-range neighbor list.
 rvdw        = $mdp.rvdw    ; Short-range Van der Waals cut-off
@@ -151,7 +149,7 @@ gen_vel    = no    ; Velocity generation is off
 
     </inputs>
     <outputs>
-        <data name="output1" format="grotxt" from_work_dir="md_0_1.gro">
+        <data name="output1" format="gro" from_work_dir="md_0_1.gro">
             <filter>str == 'gro' or str == 'both'</filter>
         </data>
         <data name="output2" format="pdb" from_work_dir="md_0_1.pdb">

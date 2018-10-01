@@ -29,7 +29,7 @@
 title    = NPT equilibration 
 define    = -DPOSRES  ; position restrain the protein
 ; Run parameters
-integrator  = $md.integrator    ; leap-frog integrator
+integrator  = $mdp.integrator    ; leap-frog integrator
 nsteps    = $mdp.npt_steps    ; 2 * 50000 = 100 ps
 dt        = $mdp.step_length    ; 2 fs
 ; Output control
@@ -180,6 +180,7 @@ gen_vel    = no    ; Velocity generation is off
             <param name="temperature" value="300"/>
             <param name="traj" value="xtc"/>
             <param name="str" value="both"/>
+            <param name="integrator" value="md" />
             <param name="constraints" value="all-bonds"/>
             <param name="cutoffscheme" value="Verlet" />
             <param name="coulombtype" value="PME" />
