@@ -16,7 +16,7 @@
     
     ]]></command>
         <configfiles>
-            <!-- .mdp files which are needed for the gromacs simulation -->
+            <!-- .mdp file for the gromacs simulation -->
             <configfile name="ions">
 : Parameters are not so important here as no simulation is run
 integrator  = steep

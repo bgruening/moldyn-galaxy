@@ -1,6 +1,6 @@
 <tool id="protein" name="Energy minimization." version="0.1.0">
     <requirements>
-        <!-- <requirement type="package">gromacs</requirement> -->
+        <requirement type="package">gromacs</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
 
@@ -18,7 +18,7 @@
         
     ]]></command>
         <configfiles>
-            <!-- .mdp files which are needed for the gromacs simulation -->
+            <!-- .mdp files for the gromacs simulation -->
             <configfile name="minim">
                 #if $mdp.mdpfile == 'default':
                     ; minim.mdp - used as input into grompp to generate em.tpr
@@ -38,13 +38,11 @@
                     pbc            = xyz     ; Periodic Boundary Conditions (yes/no)
                 #end if
             </configfile>
-
         </configfiles>
-    <inputs>
 
+    <inputs>
         <param argument="gro_input" type="data" format='gro' label="GRO structure file."/>
         <param argument="top_input" type="data" format='top' label="Topology (TOP) file."/>
-        <!-- <param argument="mdp_input" type="data" format='mdp' label="MD parameters (MDP) file (optional; default settings if not set)." optional="true"/> -->
         <param name="capture_log" type="boolean" value="false" label="Generate Detailed Log" help="Generate detailed log information that can be summarized with ParseLog."/>
 
         <conditional name="mdp">
@@ -57,10 +55,6 @@
             </when>
 
             <when value="default">
-                <!-- <param argument="md_steps" type="integer" label="Number of steps for the MD simulation" value="0" min="0" max="1000000" help="MD steps" />
-                <param argument="temperature" type="integer" label="Temperature /K" value="0" min="0" max="1000000" help="Temperature" />
-                <param argument="step_length" type="float" label="Step length in ps" value="0" min="0.0001" max="1.0" help="Step length in ps." />
-                <param argument="write_freq" type="integer" label="Number of steps that elapse between saving data points (velocities, forces, energies)" value="0" min="0" max="1000000" help="Step length in ps." /> -->
                 <param argument="integrator" type="select" label="Choice of integrator.">
                     <option value="steep">Steepest descent algorithm.</option>
                     <option value="cg">Conjugate gradient algorithm.</option>
@@ -81,7 +75,6 @@
                 <param argument="md_steps" type="integer" label="Number of steps for the MD simulation" value="0" min="0" max="1000000" help="MD steps" />
                 <param argument="emtol" type="float" label="EM tolerance" value="0" min="0" max="10000" help="The minimization is converged when the maximum force is smaller than this value" />
                 <param argument="emstep" type="float" label="Maximum step size /nm" value="0.01" min="0.0001" max="1.0" help="Initial step size in nm." />
-                <!-- <param argument="write_freq" type="integer" label="Number of steps that elapse between saving data points (velocities, forces, energies)" value="1" min="0" max="1000000" help="Step length in ps." /> -->
             </when>
         </conditional>
     </inputs>

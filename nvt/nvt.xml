@@ -1,6 +1,6 @@
 <tool id="protein" name="NVT." version="0.1.0">
     <requirements>
-        <!-- <requirement type="package">gromacs</requirement> -->
+        <requirement type="package">gromacs</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
         #if $mdp.mdpfile == "custom":
@@ -22,7 +22,7 @@
         #end if
     ]]></command>
         <configfiles>
-            <!-- .mdp files which are needed for the gromacs simulation -->
+            <!-- .mdp file for the gromacs simulation -->
             <configfile name="nvt">
                 #if $mdp.mdpfile == 'default':
                     title    = NVT equilibration 
@@ -85,10 +85,6 @@
             </param>
             <when value="custom">
                 <param argument="mdp_input" type="data" format='mdp' label="MD parameters (MDP) file (optional; default settings if not set)."/>
-                <!-- <param argument="nvt_steps" type="integer" label="Number of steps for the NVT equilibration" value="0" min="0" max="1000000" help="NVT steps" />
-                <param argument="temperature" type="integer" label="Temperature /K" value="0" min="0" max="1000000" help="Temperature" />
-                <param argument="step_length" type="float" label="Step length in ps" value="0.1" min="0.0001" max="1.0" help="Step length in ps." />
-                <param argument="write_freq" type="integer" label="Number of steps that elapse between saving data points (velocities, forces, energies)" value="0" min="0" max="1000000" help="Step length in ps." /> -->
             </when>
             <when value="default">
                 <param argument="nvt_steps" type="integer" label="Number of steps for the NVT equilibration" value="0" min="0" max="1000000" help="NVT steps" />

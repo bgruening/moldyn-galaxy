@@ -1,6 +1,6 @@
 <tool id="protein" name="MD simulation." version="0.1.0">
     <requirements>
-        <!-- <requirement type="package">gromacs</requirement> -->
+        <requirement type="package">gromacs</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
         #if $mdp.mdpfile == "custom":
@@ -25,7 +25,7 @@
 
     ]]></command>
         <configfiles>
-            <!-- .mdp files which are needed for the gromacs simulation -->
+            <!-- .mdp file for the gromacs simulation -->
             <configfile name="md">
                 #if $mdp.mdpfile == 'default':
                     title    = OPLS Lysozyme MD simulation 
@@ -83,7 +83,6 @@
         <param argument="gro_input" type="data" format='gro' label="GRO structure file."/>
         <param argument="top_input" type="data" format='top' label="Topology (TOP) file."/>
         <param argument="cpt_input" type="data" format='cpt' label="Checkpoint (CPT) file from NVT run."/>
-        <!-- <param argument="itp_input" type="data" format='itp' label="Position restraint file."/> -->
         
         <conditional name="mdp">
             <param name="mdpfile" type="select" label="Parameter input">
@@ -92,11 +91,6 @@
             </param>
             <when value="custom">
                 <param argument="mdp_input" type="data" format='mdp' label="MD parameters (MDP) file (optional; default settings if not set)."/>
-                <!-- want to remove the below lines but need to work out how to make configfile optional -->
-                <!-- <param argument="md_steps" type="integer" label="Number of steps for the MD simulation" value="0" min="0" max="1000000" help="MD steps" />
-                <param argument="temperature" type="integer" label="Temperature /K" value="0" min="0" max="1000000" help="Temperature" />
-                <param argument="step_length" type="float" label="Step length in ps" value="0.1" min="0.0001" max="1.0" help="Step length in ps." />
-                <param argument="write_freq" type="integer" label="Number of steps that elapse between saving data points (velocities, forces, energies)" value="1" min="0" max="1000000" help="Step length in ps." /> -->
             </when>
             <when value="default">
                 <param argument="integrator" type="select" label="Choice of integrator.">
@@ -171,7 +165,6 @@
             <param name="gro_input" value="npt.gro" />
             <param name="top_input" value="topol.top" />
             <param name="cpt_input" value="npt.cpt" />
-            <!-- <param name="itp_input" value="posres.itp" /> -->
             <param name="mdpfile" value="default" />
             <param name="step_length" value="0.002"/>
             <param name="md_steps" value="500"/>
@@ -216,7 +209,6 @@
             <param name="gro_input" value="npt.gro" />
             <param name="top_input" value="topol.top" />
             <param name="cpt_input" value="npt.cpt" />
-            <!-- <param name="itp_input" value="posres.itp" /> -->
             <param name="mdpfile" value="custom" />
             <param name="mdp_input" value="md.mdp" />
             <param name="traj" value="trr"/>
@@ -227,7 +219,7 @@
     </tests>
     <help><![CDATA[
 
-Upload GRO, TOP files for the production simulation, as well as the checkpoint (CPT) file from the NPT equilibration. To take advantage of all GROMACS features, upload an MDP file with simulation parameters. Otherwise, choose parameters through the Galaxy interface. See http://manual.gromacs.org/online/mdp_opt.html for more information on the options.
+Upload GRO and TOP files for the production simulation, as well as the checkpoint (CPT) file from the NPT equilibration. To take advantage of all GROMACS features, upload an MDP file with simulation parameters. Otherwise, choose parameters through the Galaxy interface. See http://manual.gromacs.org/online/mdp_opt.html for more information on the options.
     ]]></help>
     <citations>
         <citation type="doi">10.1016/j.softx.2015.06.001</citation>
