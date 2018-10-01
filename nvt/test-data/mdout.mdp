@@ -1,17 +1,17 @@
 ;
 ;	File 'mdout.mdp' was generated
-;	By user: unknown (1000)
-;	On host: simon-laptop
-;	At date: Sat Sep  1 15:27:18 2018
+;	By user: sb635 (40961)
+;	On host: bmd2
+;	At date: Mon Oct  1 14:02:39 2018
 ;
 ;	Created by:
-;	                     :-) GROMACS - gmx grompp, 2018.2 (-:
+;	                      :-) GROMACS - gmx grompp, 2018 (-:
 ;	
-;	Executable:   /home/simon/miniconda3/envs/gromacs2/bin/gmx
-;	Data prefix:  /home/simon/miniconda3/envs/gromacs2
-;	Working dir:  /home/simon/moldyn-galaxy/nvt/test-data
+;	Executable:   /home/sb635/miniconda3/envs/gmx/bin/gmx
+;	Data prefix:  /home/sb635/miniconda3/envs/gmx
+;	Working dir:  /home/sb635/moldyn-galaxy/nvt/test-data
 ;	Command line:
-;	  gmx grompp -f nvt.mdp -c ./em.gro -r ./em.gro -p topol.top -o nvt.tpr
+;	  gmx grompp -f ./nvt.mdp -c ./em.gro -r ./em.gro -p topol.top -o nvt.tpr
 
 ; VARIOUS PREPROCESSING OPTIONS
 ; Preprocessor information: use cpp syntax.

@@ -1,15 +1,15 @@
 ;
 ;	File 'mdout.mdp' was generated
-;	By user: unknown (1000)
-;	On host: simon-laptop
-;	At date: Sat Sep  1 15:49:52 2018
+;	By user: sb635 (40961)
+;	On host: bmd2
+;	At date: Mon Oct  1 14:28:56 2018
 ;
 ;	Created by:
-;	                     :-) GROMACS - gmx grompp, 2018.2 (-:
+;	                      :-) GROMACS - gmx grompp, 2018 (-:
 ;	
-;	Executable:   /home/simon/miniconda3/envs/gromacs2/bin/gmx
-;	Data prefix:  /home/simon/miniconda3/envs/gromacs2
-;	Working dir:  /home/simon/moldyn-galaxy/npt/test-data
+;	Executable:   /home/sb635/miniconda3/envs/gmx/bin/gmx
+;	Data prefix:  /home/sb635/miniconda3/envs/gmx
+;	Working dir:  /home/sb635/moldyn-galaxy/npt/test-data
 ;	Command line:
 ;	  gmx grompp -f ./npt.mdp -c ./nvt.gro -r ./nvt.gro -t ./nvt.cpt -p topol.top -o npt.tpr
 

@@ -1,11 +1,11 @@
 <tool id="protein" name="Energy minimization." version="0.1.0">
     <requirements>
-        <requirement type="package">gromacs</requirement>
+        <!-- <requirement type="package">gromacs</requirement> -->
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
 
-        #if $mdp_input:
-            ln -s '$mdp_input' ./minim.mdp &&
+        #if $mdp.mdpfile == 'custom':
+            ln -s '$mdp.mdp_input' ./minim.mdp &&
         #else:
             ln -s '$minim' ./minim.mdp &&
         #end if
@@ -20,21 +20,23 @@
         <configfiles>
             <!-- .mdp files which are needed for the gromacs simulation -->
             <configfile name="minim">
-; minim.mdp - used as input into grompp to generate em.tpr
-integrator  = $mdp.integrator    ; Algorithm (steep = steepest descent minimization)
-emtol    = $mdp.emtol     ; Stop minimization when the maximum force is less than this value
-emstep      = $mdp.emstep      ; Energy step size
-nsteps    = $mdp.md_steps      ; Maximum number of (minimization) steps to perform
+                #if $mdp.mdpfile == 'default':
+                    ; minim.mdp - used as input into grompp to generate em.tpr
+                    integrator  = $mdp.integrator    ; Algorithm (steep = steepest descent minimization)
+                    emtol    = $mdp.emtol     ; Stop minimization when the maximum force is less than this value
+                    emstep      = $mdp.emstep      ; Energy step size
+                    nsteps    = $mdp.md_steps      ; Maximum number of (minimization) steps to perform
 
-; Parameters describing how to find the neighbors of each atom and how to calculate the interactions
-nstlist        = 1        ; Frequency to update the neighbor list and long range forces
-cutoff-scheme   = $mdp.cutoffscheme
-ns_type        = grid    ; Method to determine neighbor list (simple, grid)
-coulombtype      = $mdp.coulombtype    ; Treatment of long range electrostatic interactions
-rcoulomb      = $mdp.rcoulomb    ; Short-range electrostatic cut-off
-rlist       = $mdp.rlist ; Cut-off distance for the short-range neighbor list.
-rvdw        = $mdp.rvdw    ; Short-range Van der Waals cut-off
-pbc            = xyz     ; Periodic Boundary Conditions (yes/no)
+                    ; Parameters describing how to find the neighbors of each atom and how to calculate the interactions
+                    nstlist        = 1        ; Frequency to update the neighbor list and long range forces
+                    cutoff-scheme   = $mdp.cutoffscheme
+                    ns_type        = grid    ; Method to determine neighbor list (simple, grid)
+                    coulombtype      = $mdp.coulombtype    ; Treatment of long range electrostatic interactions
+                    rcoulomb      = $mdp.rcoulomb    ; Short-range electrostatic cut-off
+                    rlist       = $mdp.rlist ; Cut-off distance for the short-range neighbor list.
+                    rvdw        = $mdp.rvdw    ; Short-range Van der Waals cut-off
+                    pbc            = xyz     ; Periodic Boundary Conditions (yes/no)
+                #end if
             </configfile>
 
         </configfiles>
@@ -42,7 +44,7 @@ pbc            = xyz     ; Periodic Boundary Conditions (yes/no)
 
         <param argument="gro_input" type="data" format='gro' label="GRO structure file."/>
         <param argument="top_input" type="data" format='top' label="Topology (TOP) file."/>
-        <param argument="mdp_input" type="data" format='mdp' label="MD parameters (MDP) file (optional; default settings if not set)." optional="true"/>
+        <!-- <param argument="mdp_input" type="data" format='mdp' label="MD parameters (MDP) file (optional; default settings if not set)." optional="true"/> -->
         <param name="capture_log" type="boolean" value="false" label="Generate Detailed Log" help="Generate detailed log information that can be summarized with ParseLog."/>
 
         <conditional name="mdp">
@@ -105,12 +107,13 @@ pbc            = xyz     ; Periodic Boundary Conditions (yes/no)
 
             <output name="output1" file="em.gro" ftype="gro" compare="sim_size"/>
         </test>
-        <!-- <test>
+        <test>
             <param name="gro_input" value="solv_ions.gro" />
             <param name="top_input" value="topol.top" />
+            <param name="mdpfile" value="custom" />
             <param name="mdp_input" value="minim.mdp" />
             <output name="output1" file="em.gro" ftype="gro" compare="sim_size"/>
-        </test> -->
+        </test>
 
     </tests>
     <help><![CDATA[

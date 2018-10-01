@@ -1,17 +1,16 @@
-Log file opened on Sat Sep  1 14:58:52 2018
-Host: simon-laptop  pid: 18203  rank ID: 0  number of ranks:  1
-                      :-) GROMACS - gmx mdrun, 2018.2 (-:
+Log file opened on Mon Oct  1 14:02:48 2018
+Host: bmd2  pid: 8772  rank ID: 0  number of ranks:  1
+                       :-) GROMACS - gmx mdrun, 2018 (-:
 
                             GROMACS is written by:
-     Emile Apol      Rossen Apostolov      Paul Bauer     Herman J.C. Berendsen
-    Par Bjelkmar    Aldert van Buuren   Rudi van Drunen     Anton Feenstra  
-  Gerrit Groenhof    Aleksei Iupinov   Christoph Junghans   Anca Hamuraru   
- Vincent Hindriksen Dimitrios Karkoulis    Peter Kasson        Jiri Kraus    
-  Carsten Kutzner      Per Larsson      Justin A. Lemkul    Viveca Lindahl  
-  Magnus Lundborg   Pieter Meulenhoff    Erik Marklund      Teemu Murtola   
-    Szilard Pall       Sander Pronk      Roland Schulz     Alexey Shvetsov  
-   Michael Shirts     Alfons Sijbers     Peter Tieleman    Teemu Virolainen 
- Christian Wennberg    Maarten Wolf   
+     Emile Apol      Rossen Apostolov  Herman J.C. Berendsen    Par Bjelkmar   
+ Aldert van Buuren   Rudi van Drunen     Anton Feenstra    Gerrit Groenhof  
+ Christoph Junghans   Anca Hamuraru    Vincent Hindriksen Dimitrios Karkoulis
+    Peter Kasson        Jiri Kraus      Carsten Kutzner      Per Larsson    
+  Justin A. Lemkul    Viveca Lindahl    Magnus Lundborg   Pieter Meulenhoff 
+   Erik Marklund      Teemu Murtola       Szilard Pall       Sander Pronk   
+   Roland Schulz     Alexey Shvetsov     Michael Shirts     Alfons Sijbers  
+   Peter Tieleman    Teemu Virolainen  Christian Wennberg    Maarten Wolf   
                            and the project leaders:
         Mark Abraham, Berk Hess, Erik Lindahl, and David van der Spoel
 
@@ -26,27 +25,27 @@ under the terms of the GNU Lesser General Public License
 as published by the Free Software Foundation; either version 2.1
 of the License, or (at your option) any later version.
 
-GROMACS:      gmx mdrun, version 2018.2
-Executable:   /home/simon/miniconda3/envs/gromacs2/bin/gmx
-Data prefix:  /home/simon/miniconda3/envs/gromacs2
-Working dir:  /home/simon/moldyn-galaxy/nvt/test-data
+GROMACS:      gmx mdrun, version 2018
+Executable:   /home/sb635/miniconda3/envs/gmx/bin/gmx
+Data prefix:  /home/sb635/miniconda3/envs/gmx
+Working dir:  /home/sb635/moldyn-galaxy/nvt/test-data
 Command line:
   gmx mdrun -deffnm nvt
 
-GROMACS version:    2018.2
+GROMACS version:    2018
 Precision:          single
 Memory model:       64 bit
 MPI library:        thread_mpi
 OpenMP support:     enabled (GMX_OPENMP_MAX_THREADS = 64)
 GPU support:        OpenCL
 SIMD instructions:  SSE2
-FFT library:        fftw-3.3.8-sse2-avx
+FFT library:        fftw-3.3.7-sse2-avx
 RDTSCP usage:       disabled
 TNG support:        enabled
-Hwloc support:      hwloc-1.11.6
+Hwloc support:      disabled
 Tracing support:    disabled
-Built on:           2018-07-28 00:06:18
-Built by:           root@default-93486173-5cec-4ecb-b912-a71b2f5835fe [CMAKE]
+Built on:           2018-07-05 18:39:39
+Built by:           root@default-44939527-b14b-45d2-a253-e059e2ad0831 [CMAKE]
 Build OS/arch:      Linux 4.4.0-96-generic x86_64
 Build CPU vendor:   Intel
 Build CPU brand:    Intel(R) Xeon(R) CPU @ 2.30GHz
@@ -56,46 +55,30 @@ C compiler:         /opt/rh/devtoolset-2/root/usr/bin/gcc GNU 4.8.2
 C compiler flags:    -msse2   -m64 -fPIC  -O3 -DNDEBUG -funroll-all-loops -fexcess-precision=fast  
 C++ compiler:       /opt/rh/devtoolset-2/root/usr/bin/g++ GNU 4.8.2
 C++ compiler flags:  -msse2   -DBOOST_MATH_DISABLE_FLOAT128 -m64 -fPIC -std=c++11   -O3 -DNDEBUG -funroll-all-loops -fexcess-precision=fast  
-OpenCL include dir: /home/simon/miniconda3/envs/gromacs2/include
-OpenCL library:     /home/simon/miniconda3/envs/gromacs2/lib/libOpenCL.so
+OpenCL include dir: /home/sb635/miniconda3/envs/gmx/include
+OpenCL library:     /home/sb635/miniconda3/envs/gmx/lib/libOpenCL.so
 OpenCL version:     2.0
 
-NOTE: Detection of GPUs failed. The API reported:
-            GROMACS cannot run tasks on a GPU.
+NOTE: GPUs cannot be detected:
+      No valid OpenCL driver found
+      Can not use GPU acceleration, will fall back to CPU kernels.
 
-Running on 1 node with total 4 cores, 4 logical cores, 0 compatible GPUs
+Running on 1 node with total 2 cores, 2 logical cores, 0 compatible GPUs
 Hardware detected:
   CPU info:
-    Vendor: AMD
-    Brand:  AMD A8-7410 APU with AMD Radeon R5 Graphics    
-    Family: 22   Model: 48   Stepping: 1
-    Features: aes amd apic avx clfsh cmov cx8 cx16 f16c htt lahf misalignsse mmx msr nonstop_tsc pclmuldq pdpe1gb popcnt pse rdrnd rdtscp sse2 sse3 sse4a sse4.1 sse4.2 ssse3
-  Hardware topology: Full, with devices
+    Vendor: Intel
+    Brand:  Intel(R) Core(TM)2 Duo CPU     E8400  @ 3.00GHz
+    Family: 6   Model: 23   Stepping: 10
+    Features: apic clfsh cmov cx8 cx16 intel lahf mmx msr pdcm pse sse2 sse3 sse4.1 ssse3
+  Hardware topology: Basic
     Sockets, cores, and logical processors:
-      Socket  0: [   0] [   1] [   2] [   3]
-    Numa nodes:
-      Node  0 (7250251776 bytes mem):   0   1   2   3
-      Latency:
-               0
-         0  1.00
-    Caches:
-      L1: 32768 bytes, linesize 64 bytes, assoc. 8, shared 1 ways
-      L2: 2097152 bytes, linesize 64 bytes, assoc. 16, shared 4 ways
-    PCI devices:
-      0000:00:01.0  Id: 1002:9851  Class: 0x0300  Numa: 0
-      0000:02:00.0  Id: 10ec:b723  Class: 0x0280  Numa: 0
-      0000:03:00.0  Id: 10ec:8136  Class: 0x0200  Numa: 0
-      0000:00:11.0  Id: 1022:7804  Class: 0x0106  Numa: 0
+      Socket  0: [   0]
+      Socket  1: [   1]
 
-Highest SIMD level requested by all nodes in run: AVX_256
+Highest SIMD level requested by all nodes in run: SSE4.1
 SIMD instructions selected at compile time:       SSE2
 This program was compiled for different hardware than you are running on,
 which could influence performance.
-
-The current CPU can measure timings more accurately than the code in
-gmx mdrun was configured to use. This might affect your simulation
-speed as accurate timings are needed for load-balancing.
-Please consider rebuilding gmx mdrun with the GMX_USE_RDTSCP=ON CMake option.
 
 ++++ PLEASE READ AND CITE THE FOLLOWING REFERENCE ++++
 M. J. Abraham, T. Murtola, R. Schulz, S. Páll, J. C. Smith, B. Hess, E.
@@ -162,7 +145,7 @@ Input Parameters:
    comm-mode                      = Linear
    nstcomm                        = 100
    bd-fric                        = 0
-   ld-seed                        = -467256582
+   ld-seed                        = -1215751805
    emtol                          = 10
    emstep                         = 0.01
    niter                          = 20
@@ -325,7 +308,7 @@ Changing nstlist from 10 to 50, rlist from 1 to 1.115
 
 
 Using 1 MPI thread
-Using 4 OpenMP threads 
+Using 2 OpenMP threads 
 
 Pinning threads with an auto-selected logical core stride of 1
 System total charge: -0.000
@@ -402,38 +385,38 @@ There are: 38376 Atoms
 Constraining the starting coordinates (step 0)
 
 Constraining the coordinates at t0-dt (step 0)
-RMS relative constraint deviation after constraining: 3.71e-05
-Initial temperature: 299.66 K
+RMS relative constraint deviation after constraining: 4.48e-05
+Initial temperature: 301.412 K
 
-Started mdrun on rank 0 Sat Sep  1 14:58:53 2018
+Started mdrun on rank 0 Mon Oct  1 14:02:49 2018
            Step           Time
               0        0.00000
 
    Energies (kJ/mol)
           Angle    Proper Dih. Ryckaert-Bell.          LJ-14     Coulomb-14
-    1.35678e+03    6.44668e+01    1.60041e+03    2.65506e+03    7.80641e+03
+    1.35679e+03    6.44669e+01    1.60041e+03    2.65507e+03    7.80641e+03
         LJ (SR)  Disper. corr.   Coulomb (SR)   Coul. recip. Position Rest.
-    9.03703e+04   -4.92233e+03   -7.54558e+05    3.41842e+03    7.19199e-01
+    9.03703e+04   -4.92233e+03   -7.54561e+05    3.41833e+03    7.19203e-01
       Potential    Kinetic En.   Total Energy  Conserved En.    Temperature
-   -6.52208e+05    9.56303e+04   -5.56577e+05   -5.56577e+05    2.99785e+02
+   -6.52211e+05    9.61905e+04   -5.56020e+05   -5.56020e+05    3.01540e+02
  Pres. DC (bar) Pressure (bar)   Constr. rmsd
-   -2.07014e+02   -7.08249e+03    4.80532e-05
+   -2.07014e+02   -7.03274e+03    4.66893e-05
 
            Step           Time
             500        1.00000
 
-Writing checkpoint, step 500 at Sat Sep  1 14:59:48 2018
+Writing checkpoint, step 500 at Mon Oct  1 14:03:11 2018
 
 
    Energies (kJ/mol)
           Angle    Proper Dih. Ryckaert-Bell.          LJ-14     Coulomb-14
-    3.51888e+03    2.72174e+02    1.98621e+03    3.04086e+03    7.89382e+03
+    3.43969e+03    2.57321e+02    1.86322e+03    3.08958e+03    7.93495e+03
         LJ (SR)  Disper. corr.   Coulomb (SR)   Coul. recip. Position Rest.
-    1.03053e+05   -4.92233e+03   -7.04352e+05    3.49865e+03    6.06295e+02
+    1.03730e+05   -4.92233e+03   -7.07612e+05    3.42674e+03    6.32638e+02
       Potential    Kinetic En.   Total Energy  Conserved En.    Temperature
-   -5.85404e+05    9.58865e+04   -4.89518e+05   -5.55718e+05    3.00588e+02
+   -5.88161e+05    9.59905e+04   -4.92170e+05   -5.55145e+05    3.00914e+02
  Pres. DC (bar) Pressure (bar)   Constr. rmsd
-   -2.07014e+02   -3.90077e+02    2.82525e-05
+   -2.07014e+02   -6.64946e+02    2.58529e-05
 
 	<======  ###############  ==>
 	<====  A V E R A G E S  ====>
@@ -443,26 +426,26 @@ Writing checkpoint, step 500 at Sat Sep  1 14:59:48 2018
 
    Energies (kJ/mol)
           Angle    Proper Dih. Ryckaert-Bell.          LJ-14     Coulomb-14
-    3.12543e+03    2.23532e+02    1.90450e+03    2.96417e+03    7.84200e+03
+    3.05297e+03    2.15022e+02    1.84814e+03    2.93333e+03    7.92206e+03
         LJ (SR)  Disper. corr.   Coulomb (SR)   Coul. recip. Position Rest.
-    1.02128e+05   -4.92233e+03   -7.17910e+05    3.48361e+03    5.36273e+02
+    1.02428e+05   -4.92233e+03   -7.18843e+05    3.43384e+03    5.34284e+02
       Potential    Kinetic En.   Total Energy  Conserved En.    Temperature
-   -6.00624e+05    9.24884e+04   -5.08136e+05   -5.55866e+05    2.89935e+02
+   -6.01398e+05    9.22423e+04   -5.09156e+05   -5.55297e+05    2.89164e+02
  Pres. DC (bar) Pressure (bar)   Constr. rmsd
-   -2.07014e+02   -1.70789e+03    0.00000e+00
+   -2.07014e+02   -1.81847e+03    0.00000e+00
 
    Total Virial (kJ/mol)
-    5.13403e+04   -1.09779e+03    2.92460e+02
-   -1.10524e+03    5.23994e+04   -1.53772e+03
-    2.97570e+02   -1.53011e+03    4.97385e+04
+    5.34506e+04   -1.02105e+03    6.26169e+02
+   -1.02129e+03    5.36623e+04   -4.11012e+02
+    6.33587e+02   -4.00301e+02    5.00679e+04
 
    Pressure (bar)
-   -1.71221e+03    8.83783e+01   -6.72360e+00
-    8.90040e+01   -1.80631e+03    1.29747e+02
-   -7.15287e+00    1.29108e+02   -1.60516e+03
+   -1.88441e+03    9.07885e+01   -3.63028e+01
+    9.08093e+01   -1.92712e+03    4.00719e+01
+   -3.69260e+01    3.91721e+01   -1.64387e+03
 
       T-Protein  T-non-Protein
-    2.89102e+02    2.89980e+02
+    2.86331e+02    2.89315e+02
 
 
 	M E G A - F L O P S   A C C O U N T I N G
@@ -474,11 +457,11 @@ Writing checkpoint, step 500 at Sat Sep  1 14:59:48 2018
 
  Computing:                               M-Number         M-Flops  % Flops
 -----------------------------------------------------------------------------
- Pair Search distance check             141.510696        1273.596     0.3
- NxN QSTab Elec. + LJ [F]              4911.945288      201389.757    51.8
- NxN QSTab Elec. + LJ [V&F]              59.556616        3513.840     0.9
- NxN QSTab Elec. [F]                   4408.408968      149885.905    38.6
- NxN QSTab Elec. [V&F]                   53.438568        2190.981     0.6
+ Pair Search distance check             141.538338        1273.845     0.3
+ NxN QSTab Elec. + LJ [F]              4916.217352      201564.911    51.9
+ NxN QSTab Elec. + LJ [V&F]              59.541696        3512.960     0.9
+ NxN QSTab Elec. [F]                   4402.622456      149689.164    38.5
+ NxN QSTab Elec. [V&F]                   53.333776        2186.685     0.6
  1,4 nonbonded interactions               2.558106         230.230     0.1
  Calc Weights                            57.679128        2076.449     0.5
  Spread Q Bspline                      1230.488064        2460.976     0.6
@@ -499,38 +482,38 @@ Writing checkpoint, step 500 at Sat Sep  1 14:59:48 2018
  Constraint-Vir                           0.230352           5.528     0.0
  Settle                                   6.104408        1971.724     0.5
 -----------------------------------------------------------------------------
- Total                                                  388593.101   100.0
+ Total                                                  388566.587   100.0
 -----------------------------------------------------------------------------
 
 
      R E A L   C Y C L E   A N D   T I M E   A C C O U N T I N G
 
-On 1 MPI rank, each using 4 OpenMP threads
+On 1 MPI rank, each using 2 OpenMP threads
 
  Computing:          Num   Num      Call    Wall time         Giga-Cycles
                      Ranks Threads  Count      (s)         total sum    %
 -----------------------------------------------------------------------------
- Neighbor search        1    4         11       1.096          9.626   2.0
- Force                  1    4        501      39.958        350.973  73.2
- PME mesh               1    4        501       7.604         66.789  13.9
- NB X/F buffer ops.     1    4        991       1.715         15.060   3.1
- Write traj.            1    4          2       0.441          3.872   0.8
- Update                 1    4        501       1.675         14.713   3.1
- Constraints            1    4        501       1.882         16.534   3.4
- Rest                                           0.217          1.910   0.4
+ Neighbor search        1    2         11       0.548          3.279   2.5
+ Force                  1    2        501      16.899        101.141  76.7
+ PME mesh               1    2        501       3.473         20.786  15.8
+ NB X/F buffer ops.     1    2        991       0.201          1.201   0.9
+ Write traj.            1    2          2       0.179          1.073   0.8
+ Update                 1    2        501       0.296          1.772   1.3
+ Constraints            1    2        501       0.387          2.314   1.8
+ Rest                                           0.041          0.246   0.2
 -----------------------------------------------------------------------------
- Total                                         54.588        479.477 100.0
+ Total                                         22.023        131.812 100.0
 -----------------------------------------------------------------------------
  Breakdown of PME mesh computation
 -----------------------------------------------------------------------------
- PME spread             1    4        501       2.486         21.834   4.6
- PME gather             1    4        501       3.264         28.672   6.0
- PME 3D-FFT             1    4       1002       1.607         14.114   2.9
- PME solve Elec         1    4        501       0.153          1.342   0.3
+ PME spread             1    2        501       1.582          9.470   7.2
+ PME gather             1    2        501       1.208          7.229   5.5
+ PME 3D-FFT             1    2       1002       0.580          3.473   2.6
+ PME solve Elec         1    2        501       0.098          0.587   0.4
 -----------------------------------------------------------------------------
 
                Core t (s)   Wall t (s)        (%)
-       Time:      218.354       54.588      400.0
+       Time:       44.047       22.023      200.0
                  (ns/day)    (hour/ns)
-Performance:        1.586       15.133
-Finished mdrun on rank 0 Sat Sep  1 14:59:48 2018
+Performance:        3.931        6.105
+Finished mdrun on rank 0 Mon Oct  1 14:03:11 2018
